@@ -91,12 +91,14 @@ yarn install
 # Using pnpm
 pnpm install
 ```
-# Using sortable
+
+### Step 4: Install sortablejs Dependencies
+
+```bash
 npm install sortablejs
 ```
 
-
-### Step 4: Environment Configuration
+### Step 5: Environment Configuration
 
 Copy the example environment file:
 
@@ -116,7 +118,7 @@ copy .env.example .env
 php -r "file_exists('.env') || copy('.env.example', '.env');"
 ```
 
-### Step 5: Generate Application Key
+### Step 6: Generate Application Key
 
 ```bash
 php artisan key:generate
@@ -124,7 +126,7 @@ php artisan key:generate
 
 This creates a unique encryption key for your application.
 
-### Step 6: Configure Database
+### Step 7: Configure Database
 
 #### Option A: Using MySQL/PostgreSQL
 
@@ -155,7 +157,7 @@ Run migrations:
 php artisan migrate
 ```
 
-### Step 7: (Optional) Seed the Database
+### Step 8: (Optional) Seed the Database
 
 If you want sample data:
 
@@ -163,7 +165,7 @@ If you want sample data:
 php artisan db:seed
 ```
 
-### Step 8: Storage Link
+### Step 9: Storage Link
 
 Create a symbolic link for file storage:
 
