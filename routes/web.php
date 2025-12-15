@@ -1,8 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProjectController;
-
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\OtpController;
 
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
@@ -60,9 +64,10 @@ Route::get('/signin', function () {
     return view('pages.auth.signin', ['title' => 'Sign In']);
 })->name('signin');
 
-Route::get('/signup', function () {
-    return view('pages.auth.signup', ['title' => 'Sign Up']);
-})->name('signup');
+// Route::get('/signup', function () {
+//     return view('pages.auth.signup', ['title' => 'Sign Up']);
+// })->name('signup');
+
 
 // ui elements pages
 Route::get('/alerts', function () {
@@ -92,15 +97,18 @@ Route::get('/videos', function () {
 
 
 // baru
+Route::get('/test', [TestController::class, 'test'])->name('test');
 
 Route::resource('menus', MenuController::class);
 Route::resource('menu-items', MenuItemController::class);
 Route::post('/menu-items/reorder', [MenuItemController::class, 'reorder'])
     ->name('menu-items.reorder');
 
-
-
-
+Route::get('/signup', [RegisterController::class, 'show'])->name('register');
+Route::post('/signup', [RegisterController::class, 'store'])->name('register.store');
+Route::get('/two-step-verification', [OtpController::class, 'form'])->name('otp.form');
+Route::post('/two-step-verification', [OtpController::class, 'verify'])->name('otp.verify');
+Route::post('/otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
 
 
 
