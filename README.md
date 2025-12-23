@@ -1,52 +1,74 @@
-# TailAdmin Laravel - Tailwind CSS Free Laravel Dashboard
+# RIT Organization Management System
 
-**TailAdmin Laravel** is a modern, production-ready admin dashboard template powered by **Laravel 12**, **Tailwind CSS v4**, **Alpine.js**, and a clean, modular architecture. TailAdmin is one of the most popular Tailwind CSS dashboard now also available for Larvael. It’s designed for building fast, scalable admin panels, CRM dashboards, SaaS backends, and any data-driven application where clarity and performance matter.
-![TailAdmin - Next.js Dashboard Preview](./tailadmin-laravel.png)
+Aplikasi **RIT Organization Management System** adalah aplikasi berbasis web yang dikembangkan untuk mendukung pengelolaan organisasi **RIT (Republic of Information Technology)** secara terpusat, efisien, dan terstruktur.
 
+Aplikasi ini dibangun menggunakan **Laravel**, **MySQL**, dan **TailAdmin** sebagai template antarmuka, dengan fokus utama pada **manajemen proyek organisasi** sebagai fitur unggulan.
 
-## Quick Links
+---
 
-* [✨ Get TailAdmin Laravel](https://tailadmin.com/laravel)
-* [📄 Documentation](https://tailadmin.com/docs)
-* [⬇️ Download](https://tailadmin.com/download)
-* [🌐 Live Demo](https://laravel-demo.tailadmin.com)
+## 🚀 Fitur Utama
 
-Here’s a tighter, more search-friendly version that highlights value and avoids fluff while keeping your structure intact.
+### 1. Manajemen Struktur Organisasi & Anggota
 
-## ✨ Key Features
+* Pengelolaan struktur organisasi
+* Manajemen data anggota
+* Pengelompokan anggota berdasarkan jabatan/divisi
+
+### 2. Manajemen Proyek (Fitur Unggulan)
+
+* Pembuatan dan pengelolaan proyek organisasi
+* Penugasan anggota ke dalam proyek
+* Monitoring progres proyek
+* Dokumentasi dan arsip proyek
+
+### 3. Manajemen Inventaris
+
+* Pencatatan barang/inventaris organisasi
+* Status ketersediaan barang
+* Riwayat penggunaan inventaris
+
+### 4. Manajemen Keuangan
+
+* Pencatatan pemasukan dan pengeluaran
+* Laporan keuangan
+* Monitoring saldo organisasi
+
+### 5. Manajemen Surat-Menyurat
+
+* Pengelolaan surat masuk dan surat keluar
+* Arsip digital surat
+* Kategori dan pencarian surat
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+* **Backend**: Laravel
+* **Frontend**: TailAdmin (Tailwind CSS)
+* **Database**: MySQL
+* **Version Control**: Git & GitHub
+---
+
+## ✨ Fitur Lainnya
 
 * 🚀 **Laravel 12 Core** - Built on the latest Laravel release with improved routing, security, and Blade templating
 * 🎨 **Tailwind CSS v4** - Utility-first styling for rapid, consistent UI development
 * ⚡ **Alpine.js Interactivity** - Lightweight reactivity without a heavy JavaScript framework
+* ⚡ **Sortable Js** - Interaktif tampilan perpindahan menu
 * 📦 **Vite Build System** - Fast dev server, instant HMR, and optimized production builds
 * 📱 **Fully Responsive Layouts** - Smooth, mobile-first design that adapts across all screen sizes
 * 🌙 **Built-in Dark Mode** - Ready-to-use modern dark theme for better usability and aesthetics
 * 📊 **Advanced UI Components** - Charts, data tables, forms, calendars, modals, and reusable blocks for complex dashboards
 * 🎯 **Production-Ready Dashboard UI** - Clean, modern interface crafted for real apps, not placeholder demos
 
-### Other Versions
-
-- [Next.js Version](https://github.com/TailAdmin/free-nextjs-admin-dashboard)
-- [React.js Version](https://github.com/TailAdmin/free-react-tailwind-admin-dashboard)
-- [Vue.js Version](https://github.com/TailAdmin/vue-tailwind-admin-dashboard)
-- [Angular Version](https://github.com/TailAdmin/free-angular-tailwind-dashboard)
-- [Laravel Version](https://github.com/TailAdmin/tailadmin-laravel)
-
+---
 ## 📋 Requirements
-To set up TailAdmin Laravel, make sure your environment includes:
+Untuk Menginstall Aplikasi ini pastikan environtment anda memenuhi :
 
 * **PHP 8.2+**
 * **Composer** (PHP dependency manager)
 * **Node.js 18+** and **npm** (for compiling frontend assets)
 * **Database** - Works with SQLite (default), MySQL, or PostgreSQL
-
-### Tailwind CSS Laravel Dashboard
-
-TailAdmin delivers a refined Tailwind CSS Laravel Dashboard experience, combining Laravel’s robust backend with Tailwind’s flexible utility classes. The result is a clean, fast, and customizable dashboard that helps developers build modern admin interfaces without the usual front-end complexity. It’s ideal for teams looking for a Tailwind-powered Laravel starter that stays lightweight and easy to scale.
-
-### Laravel Admin Dashboard
-
-If you’re searching for a dependable Laravel Admin Dashboard template that’s easy to set up and ready for production, TailAdmin fits the job. It offers a polished UI, reusable components, optimized performance, and all the essentials needed to launch dashboards, CRM systems, and internal tools quickly. It gives developers a solid foundation, so projects move faster with fewer decisions to worry about.
 
 ### Check Your Environment
 
@@ -59,30 +81,30 @@ node -v
 npm -v
 ```
 
-## 🚀 Quick Start Installation
+---
+## 📦 Instalasi
 
-### Step 1: Clone the Repository
+Ikuti langkah-langkah berikut untuk menjalankan aplikasi ini secara lokal:
+
+### 1. Clone Repository
 
 ```bash
-git clone https://github.com/TailAdmin/tailadmin-laravel.git
-cd tailadmin-laravel
+git clone https://github.com/FauzanFaiz17/RIT-WEB-Laravel-.git
+cd RIT-WEB-Laravel-
 ```
 
-### Step 2: Install PHP Dependencies
+### 2. Install Dependency
 
 ```bash
 composer install
 ```
-
-This command will install all Laravel dependencies defined in `composer.json`.
-
-### Step 3: Install Node.js Dependencies
+### 3: Install Node.js Dependencies
 
 ```bash
 npm install
 ```
 
-Or if you prefer yarn or pnpm:
+atau jika kamu lebih prefer yarn atau pnpm:
 
 ```bash
 # Using yarn
@@ -92,56 +114,39 @@ yarn install
 pnpm install
 ```
 
-### Step 4: Install sortablejs Dependencies
+### 4: Install sortablejs Dependencies
 
 ```bash
 npm install sortablejs
 ```
 
-### Step 5: Environment Configuration
+### 5. Konfigurasi Environment
 
-Copy the example environment file:
+Salin file `.env.example` menjadi `.env` lalu sesuaikan konfigurasi database:
 
 ```bash
 cp .env.example .env
 ```
-
 **For Windows users:**
 
 ```bash
 copy .env.example .env
 ```
-
 **Or create it programmatically:**
 
 ```bash
 php -r "file_exists('.env') || copy('.env.example', '.env');"
 ```
 
-### Step 6: Generate Application Key
-
-```bash
-php artisan key:generate
-```
-
-This creates a unique encryption key for your application.
-
-### Step 7: Configure Database
-
-#### Option A: Using MySQL/PostgreSQL
-
-Update your `.env` file with your database credentials:
-
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=tailadmin_db
+DB_DATABASE=nama_database
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
-
-Create the database:
+Membuat database:
 
 ```bash
 # MySQL
@@ -151,21 +156,19 @@ mysql -u root -p -e "CREATE DATABASE tailadmin_db;"
 createdb tailadmin_db
 ```
 
-Run migrations:
+### 6. Generate Application Key
 
 ```bash
-php artisan migrate
+php artisan key:generate
 ```
 
-### Step 8: (Optional) Seed the Database
-
-If you want sample data:
+### 7. Migrasi Database & Seeder
 
 ```bash
-php artisan db:seed
+php artisan migrate --seed
 ```
 
-### Step 9: Storage Link
+### 8: Storage Link
 
 Create a symbolic link for file storage:
 
@@ -173,183 +176,38 @@ Create a symbolic link for file storage:
 php artisan storage:link
 ```
 
-## 🏃 Running the Application
+### 9. Jalankan Server
 
-### Development Mode (Recommended)
+```bash
+php artisan serve
+```
 
-The easiest way to start development is using the built-in script:
+Aplikasi dapat diakses melalui `http://localhost:8000`
+
+---
+
+### Terminal kedua
+
+Jangan lupa menjalankan frontendnya dengan menjalankan script:
 
 ```bash
 composer run dev
 ```
 
-This single command starts:
-- ✅ Laravel development server (http://localhost:8000)
-- ✅ Vite dev server for hot module reloading
-- ✅ Queue worker for background jobs
-- ✅ Log monitoring
 
-**Access your application at:** [http://localhost:8000](http://localhost:8000)
+## 👤 Role & Akses (Opsional)
 
-### Manual Development Setup
+* **Admin**: Mengelola seluruh fitur aplikasi
+* **Pengurus**: Mengelola data sesuai divisi
+* **Anggota**: Melihat informasi dan proyek yang diikuti
 
-If you prefer to run services individually in separate terminal windows:
+---
 
-**Terminal 1 - Laravel Server:**
-```bash
-php artisan serve
-```
+## 📁 Struktur Folder (Ringkas)
 
-**Terminal 2 - Frontend Assets:**
-```bash
-npm run dev
-```
-
-### Building for Production
-
-#### Build Frontend Assets
-
-```bash
-npm run build
-```
-
-#### Optimize Laravel
-
-```bash
-# Clear and cache configuration
-php artisan config:cache
-
-# Cache routes
-php artisan route:cache
-
-# Cache views
-php artisan view:cache
-
-# Optimize autoloader
-composer install --optimize-autoloader --no-dev
-```
-
-#### Production Environment
-
-Update your `.env` for production:
-
-```env
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://yourdomain.com
-```
-
-
-## 🧪 Testing
-
-Run the test suite using Pest:
-
-```bash
-composer run test
-```
-
-Or manually:
-
-```bash
-php artisan test
-```
-
-Run with coverage:
-
-```bash
-php artisan test --coverage
-```
-
-Run specific tests:
-
-```bash
-php artisan test --filter=ExampleTest
-```
-
-## 📜 Available Commands
-
-### Composer Scripts
-
-```bash
-# Start development environment
-composer run dev
-
-# Run tests
-composer run test
-
-# Code formatting (if configured)
-composer run format
-
-# Static analysis (if configured)
-composer run analyze
-```
-
-### NPM Scripts
-
-```bash
-# Start Vite dev server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Lint JavaScript/TypeScript
-npm run lint
-
-# Format code
-npm run format
-```
-
-### Artisan Commands
-
-```bash
-# Start development server
-php artisan serve
-
-# Run migrations
-php artisan migrate
-
-# Rollback migrations
-php artisan migrate:rollback
-
-# Fresh migrations with seeding
-php artisan migrate:fresh --seed
-
-# Generate application key
-php artisan key:generate
-
-# Clear all caches
-php artisan optimize:clear
-
-# Cache everything for production
-php artisan optimize
-
-# Create symbolic link for storage
-php artisan storage:link
-
-# Start queue worker
-php artisan queue:work
-
-# List all routes
-php artisan route:list
-
-# Create a new controller
-php artisan make:controller YourController
-
-# Create a new model
-php artisan make:model YourModel -m
-
-# Create a new migration
-php artisan make:migration create_your_table
-```
-
-## 📁 Project Structure
 
 ```
-tailadmin-laravel/
+RIT-WEB-Laravel-/
 ├── app/                    # Application logic
 │   ├── Http/              # Controllers, Middleware, Requests
 │   ├── Models/            # Eloquent models
@@ -386,36 +244,36 @@ tailadmin-laravel/
 └── tailwind.config.js     # Tailwind configuration
 ```
 
-## 🐛 Troubleshooting
+---
 
-### Common Issues
+## 🤝 Kontribusi
 
-#### "Class not found" errors
-```bash
-composer dump-autoload
-```
+Kontribusi sangat terbuka untuk pengembangan aplikasi ini.
 
-#### Permission errors on storage/bootstrap/cache
-```bash
-chmod -R 775 storage bootstrap/cache
-```
+Langkah kontribusi:
 
-#### NPM build errors
-```bash
-rm -rf node_modules package-lock.json
-npm install
-```
+1. Fork repository
+2. Buat branch fitur baru
+3. Commit perubahan
+4. Pull request ke branch utama
 
-#### Clear all caches
-```bash
-php artisan optimize:clear
-```
+---
 
-#### Database connection errors
-- Check `.env` database credentials
-- Ensure database server is running
-- Verify database exists
+## 📄 Lisensi
 
-## License
+Aplikasi ini dikembangkan untuk kebutuhan internal organisasi **Republic of Information Technology (RIT)**.
 
-Refer to our [LICENSE](https://tailadmin.com/license) page for more information.
+---
+
+## 📬 Kontak
+
+Jika terdapat pertanyaan atau saran, silakan hubungi:
+
+* **Organisasi**: Republic of Information Technology (RIT)
+* **Platform**: GitHub Repository
+
+---
+![TailAdmin - Next.js Dashboard Preview](./profile.png)
+> Dibuat dengan ❤️ untuk mendukung manajemen organisasi RIT yang lebih profesional dan terintegrasi.
+
+- by WEB DIVISION RIT

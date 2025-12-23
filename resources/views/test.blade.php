@@ -14,6 +14,10 @@
                         Back to dashboard
                     </a>
                 </div>
+                @error('otp')
+                    <p class="mt-2 text-sm text-red-500 text-center">{{ $message }}</p>
+                @enderror
+
                 <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
                     <div class="mb-5 sm:mb-8">
                         <h1 class="text-title-sm sm:text-title-md mb-2 font-semibold text-gray-800 dark:text-white/90">
@@ -36,9 +40,10 @@
                                         type="text"
                                         maxlength="1"
                                         inputmode="numeric"
-                                        class="otp-input h-11 w-full rounded-lg border border-gray-300 bg-white text-center text-xl font-semibold
-                                            text-gray-800 focus:border-brand-500 focus:ring-3 focus:ring-brand-500/10
-                                            dark:border-gray-700 dark:bg-dark-900 dark:text-white"
+                                        class="otp-input h-11 w-full rounded-lg border
+                                            border-gray-300 bg-white text-center text-xl font-semibold text-gray-800
+                                            focus:border-brand-500 focus:ring-3 focus:ring-brand-500/10
+                                            dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                                         x-model="digits[index]"
                                         @input="handleInput(index)"
                                         @keydown.backspace="handleBackspace(index)"
@@ -101,6 +106,34 @@
         </div>
     </div>
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('.otp-input');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            if (input.value.length === 1 && inputs[index + 1]) {
+                inputs[index + 1].focus();
+            }
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !input.value && inputs[index - 1]) {
+                inputs[index - 1].focus();
+            }
+        });
+
+        input.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const paste = e.clipboardData.getData('text').slice(0, inputs.length);
+            paste.split('').forEach((char, i) => {
+                if (inputs[i]) inputs[i].value = char;
+            });
+            inputs[paste.length - 1]?.focus();
+        });
+    });
+});
+</script>
 
 <script>
 function otpForm() {
