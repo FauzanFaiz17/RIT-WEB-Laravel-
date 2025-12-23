@@ -8,10 +8,14 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\OtpController;
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CommunityUserController;
+use App\Http\Controllers\DashboardController;
+
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 Route::get('/projects/{project}/gantt', [ProjectController::class, 'gantt'])->name('projects.gantt');
-
 
 // dashboard pages
 Route::get('/', function () {
@@ -123,3 +127,71 @@ Route::post('/otp/resend', [OtpController::class, 'resend'])->name('otp.resend')
 
 
 
+
+// 1. ROUTE TAMU (GUEST) - Belum Login
+Route::middleware('guest')->group(function () {
+    // Login
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+
+    // Register
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+// 2. ROUTE USER - Wajib Login
+Route::middleware('auth')->group(function () {
+    
+    // --- Logout ---
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // --- Dashboard ---
+    Route::get('/', function () {
+        return redirect()->route('dashboard');
+    });
+ Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+    
+    // --- Fitur Profile ---
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // --- Fitur Komunitas & Anggota ---
+
+    // 1. Halaman List Divisi (Melihat anak-anak dari Komunitas)
+    Route::get('/community/{name}', [CommunityUserController::class, 'indexDivisions'])
+        ->name('community.divisions');
+
+    // 2. Halaman List Anggota (Melihat anggota dalam Divisi)
+    Route::get('/community/{name}/members', [CommunityUserController::class, 'indexMembers'])
+        ->name('member.list');
+
+    // 3. CRUD Anggota (Manual Route)
+    
+    // Form Tambah Anggota
+    Route::get('/community-user/create', [CommunityUserController::class, 'create'])
+        ->name('community_user.create');
+
+    // Proses Simpan Data
+    Route::post('/community-user/store', [CommunityUserController::class, 'store'])
+        ->name('community_user.store');
+
+    // Form Edit Anggota
+    Route::get('/community-user/{id}/edit', [CommunityUserController::class, 'edit'])
+        ->name('community_user.edit');
+
+    // Proses Update Data
+    Route::put('/community-user/{id}', [CommunityUserController::class, 'update'])
+        ->name('community_user.update');
+
+    // Proses Hapus Data
+    Route::delete('/community-user/{id}', [CommunityUserController::class, 'destroy'])
+        ->name('community_user.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    // Route lainnya...
+    Route::put('/profile/photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.photo.update');
+});

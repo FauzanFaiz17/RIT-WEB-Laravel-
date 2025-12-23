@@ -1,10 +1,9 @@
 <?php
 
 namespace Database\Seeders;
-
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,14 +12,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        $this->call(MenuSeeder::class);
-        $this->call(MenuItemSeeder::class);
-        // User::factory(10)->create();
+        // Panggil seeder lain di sini
+        $this->call([
+            RoleSeeder::class, 
+            UnitSeeder::class, 
+        ]);
 
         // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
+        //     'name' => 'Admin User',
+        //     'email' => 'admin@gmail.com',
+        //     'password' => bcrypt('password'),
+          
         // ]);
     }
 }

@@ -51,4 +51,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    
+ public function units()
+{
+    return $this->belongsToMany(Unit::class, 'unit_user', 'user_id', 'unit_id')
+                ->using(UnitUser::class) // <--- Tambahkan baris ini
+                ->withPivot('role_id')
+                ->withTimestamps();
+}
+
+
+// app/Models/User.php
+public function memberships() {
+    return $this->hasMany(UnitUser::class);
+}
 }

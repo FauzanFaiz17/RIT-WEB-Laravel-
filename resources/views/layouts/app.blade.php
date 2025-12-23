@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'Dashboard' }} | TailAdmin - Laravel Tailwind CSS Admin Dashboard Template</title>
+    <title>{{ $title ?? '' }} | Manajemen Organisasi RIT</title>
+    {{-- 2. Perbaikan Favicon (Mengarah ke folder images/logo/) --}}
+    <link rel="icon" type="image/png" href="{{ asset('images/logo/rit-logo.png') }}">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -125,7 +127,12 @@
             @include('layouts.app-header')
             <!-- app header end -->
             <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+              
+              {{-- PASANG DI SINI --}}
+              <x-common.alert-manager />
+              
                 @yield('content')
+                
             </div>
         </div>
 
