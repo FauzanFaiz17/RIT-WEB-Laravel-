@@ -16,6 +16,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call(MenuSeeder::class);
         $this->call(MenuItemSeeder::class);
+        $this->call(KategoriKeuanganSeeder::class);
+        $this->call(InventarisBarangSeeder::class);
+        $this->call(KeuanganSeeder::class);
+        $this->call(SuratSeeder::class);
+        $this->call(InventarisMutasiSeeder::class);
+
+        
         // User::factory(10)->create();
 
         // User::factory()->create([
