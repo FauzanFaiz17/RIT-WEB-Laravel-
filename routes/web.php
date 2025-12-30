@@ -13,9 +13,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommunityUserController;
 use App\Http\Controllers\DashboardController;
 
-Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
-Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
-Route::get('/projects/{project}/gantt', [ProjectController::class, 'gantt'])->name('projects.gantt');
 
 // dashboard pages
 Route::get('/', function () {

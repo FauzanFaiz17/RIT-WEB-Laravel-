@@ -14,8 +14,17 @@ class DatabaseSeeder extends Seeder
     {
         // Panggil seeder lain di sini
         $this->call([
-            RoleSeeder::class, 
-            UnitSeeder::class, 
+            // MenuSeeder::class, 
+            MenuItemSeeder::class, 
+            // RoleSeeder::class, 
+            // UnitSeeder::class, 
+            // RoleSeeder::class, 
+            // UnitSeeder::class, 
+            // RoleSeeder::class, 
+            // UnitSeeder::class, 
+            // RoleSeeder::class, 
+            // UnitSeeder::class, 
+            // UserSeeder::class, 
         ]);
 
         // User::factory()->create([

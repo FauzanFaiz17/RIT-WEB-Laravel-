@@ -56,6 +56,42 @@ class MenuItemSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ]);
+        $organisasiid = DB::table('menu_items')->insertGetId([
+            'menu_id' => $menu->id,
+            'name' => 'Organization',
+            'icon' => 'dashboard',
+            'order' => 2,
+            'parent_id' => null,
+            'path' => null,
+            'is_pro' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('menu_items')->insert([
+            [
+                'menu_id' => $menu->id,
+                'parent_id' => $organisasiid,
+                'name' => 'comunity it',
+                'path' => '/community/Komunitas IT',
+                'order' => 1,
+                'is_pro' => false,
+                'icon' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'menu_id' => $menu->id,
+                'parent_id' => $organisasiid,
+                'name' => 'comunity game',
+                'path' => '/community/Komunitas Game',
+                'order' => 2,
+                'is_pro' => false,
+                'icon' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
 
         // Calendar
         DB::table('menu_items')->insert([
@@ -64,7 +100,7 @@ class MenuItemSeeder extends Seeder
             'icon' => 'calendar',
             'path' => '/calendar',
             'parent_id' => null,
-            'order' => 2,
+            'order' => 3,
             'is_pro' => false,
             'created_at' => now(),
             'updated_at' => now(),
@@ -77,7 +113,7 @@ class MenuItemSeeder extends Seeder
             'icon' => 'user-profile',
             'path' => '/profile',
             'parent_id' => null,
-            'order' => 3,
+            'order' => 4,
             'is_pro' => false,
             'created_at' => now(),
             'updated_at' => now(),
@@ -89,7 +125,7 @@ class MenuItemSeeder extends Seeder
             'name' => 'Forms',
             'icon' => 'forms',
             'path' => null,
-            'order' => 4,
+            'order' => 5,
             'parent_id' => null,
             'is_pro' => false,
             'created_at' => now(),
@@ -101,7 +137,7 @@ class MenuItemSeeder extends Seeder
             'parent_id' => $formsId,
             'name' => 'Form Elements',
             'path' => '/form-elements',
-            'order' => 1,
+            'order' => 6,
             'is_pro' => false,
             'created_at' => now(),
             'updated_at' => now(),
