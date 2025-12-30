@@ -149,11 +149,18 @@
                                             <ul class="mt-2 space-y-1 ml-9">
                                                 @foreach ($item['subItems'] as $subItem)
                                                     <li>
-                                                        <a href="{{ $subItem['path'] }}" class="menu-dropdown-item"
+                                                        <a href="{{ $subItem['path'] }}" class="menu-dropdown-item flex items-center gap-2"
                                                             :class="isActive('{{ $subItem['path'] }}') ?
                                                                 'menu-dropdown-item-active' :
                                                                 'menu-dropdown-item-inactive'">
-                                                            {{ $subItem['name'] }}
+
+                                                            <!-- Icon untuk sub-menu -->
+                                                            @if(!empty($subItem['icon']))
+                                                                <span class="flex-shrink-0">
+                                                                    {!! MenuHelper::getIconSvg($subItem['icon']) !!}
+                                                                </span>
+                                                            @endif
+                                                            <span class="flex-1">{{ $subItem['name'] }}</span>
                                                             <span class="flex items-center gap-1 ml-auto">
                                                                 @if (!empty($subItem['new']))
                                                                     <span

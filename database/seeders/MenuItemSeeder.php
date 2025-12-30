@@ -37,6 +37,7 @@ class MenuItemSeeder extends Seeder
                 'menu_id' => $menu->id,
                 'parent_id' => $dashboardId,
                 'name' => 'Ecommerce',
+                'icon' => 'ecommerce',
                 'path' => '/',
                 'order' => 1,
                 'is_pro' => false,
@@ -44,17 +45,17 @@ class MenuItemSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'menu_id' => $menu->id,
-                'parent_id' => $dashboardId,
-                'name' => 'test',
-                'path' => '/est',
-                'order' => 2,
-                'is_pro' => false,
-                'icon' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            // [
+            //     'menu_id' => $menu->id,
+            //     'parent_id' => $dashboardId,
+            //     'name' => 'test',
+            //     'path' => '/est',
+            //     'order' => 2,
+            //     'is_pro' => false,
+            //     'icon' => null,
+            //     'created_at' => now(),
+            //     'updated_at' => now(),
+            // ],
         ]);
         $organisasiid = DB::table('menu_items')->insertGetId([
             'menu_id' => $menu->id,
@@ -93,6 +94,42 @@ class MenuItemSeeder extends Seeder
             ],
         ]);
 
+        // Keuangan
+        DB::table('menu_items')->insert([
+            'menu_id' => $menu->id,
+            'name' => 'Keuangan',
+            'icon' => 'tables',
+            'path' => '/keuangan',
+            'parent_id' => null,
+            'order' => 3,
+            'is_pro' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        // Inventaris
+        DB::table('menu_items')->insert([
+            'menu_id' => $menu->id,
+            'name' => 'Inventaris',
+            'icon' => 'pages',
+            'path' => '/invenaris',
+            'parent_id' => null,
+            'order' => 4,
+            'is_pro' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        // Surat
+        DB::table('menu_items')->insert([
+            'menu_id' => $menu->id,
+            'name' => 'Surat',
+            'icon' => 'email',
+            'path' => '/surat',
+            'parent_id' => null,
+            'order' => 5,
+            'is_pro' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         // Calendar
         DB::table('menu_items')->insert([
             'menu_id' => $menu->id,
@@ -100,7 +137,7 @@ class MenuItemSeeder extends Seeder
             'icon' => 'calendar',
             'path' => '/calendar',
             'parent_id' => null,
-            'order' => 3,
+            'order' => 6,
             'is_pro' => false,
             'created_at' => now(),
             'updated_at' => now(),
@@ -113,7 +150,7 @@ class MenuItemSeeder extends Seeder
             'icon' => 'user-profile',
             'path' => '/profile',
             'parent_id' => null,
-            'order' => 4,
+            'order' => 7,
             'is_pro' => false,
             'created_at' => now(),
             'updated_at' => now(),
@@ -125,7 +162,7 @@ class MenuItemSeeder extends Seeder
             'name' => 'Forms',
             'icon' => 'forms',
             'path' => null,
-            'order' => 5,
+            'order' => 8,
             'parent_id' => null,
             'is_pro' => false,
             'created_at' => now(),
@@ -137,7 +174,7 @@ class MenuItemSeeder extends Seeder
             'parent_id' => $formsId,
             'name' => 'Form Elements',
             'path' => '/form-elements',
-            'order' => 6,
+            'order' => 1,
             'is_pro' => false,
             'created_at' => now(),
             'updated_at' => now(),
@@ -176,6 +213,17 @@ class MenuItemSeeder extends Seeder
                 'order' => 2,
                 'is_pro' => false,
             ],
+        ]);
+        DB::table('menu_items')->insert([
+            'menu_id' => $others->id,
+            'name' => 'Menu',
+            'icon' => 'dashboard',
+            'path' => '/menu-items',
+            'parent_id' => null,
+            'order' => 2,
+            'is_pro' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
     }

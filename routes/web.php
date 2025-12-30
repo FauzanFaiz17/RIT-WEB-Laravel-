@@ -7,11 +7,16 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\SuratController;
+use App\Http\Controllers\InventarisController;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommunityUserController;
-use App\Http\Controllers\DashboardController;
+
 
 
 // dashboard pages
@@ -112,6 +117,65 @@ Route::post('/two-step-verification', [OtpController::class, 'verify'])->name('o
 Route::post('/otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
 
 
+
+// --- USER MANAGEMENT PAGES (CRUD) ---
+
+// 1. Index (Menampilkan daftar semua user)
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+// 2. Create (Menampilkan form tambah user baru)
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+
+// 3. Store (Menyimpan data user baru dari form)
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+
+// 4. Show (Menampilkan detail satu user)
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+
+// 5. Edit (Menampilkan form edit user)
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+
+// 6. Update (Memperbarui data user yang sudah ada)
+// Metode: PUT/PATCH digunakan untuk pembaruan data
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+
+// 7. Destroy (Menghapus user)
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+// --- ROUTE KEUANGAN ---
+Route::get('/keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
+Route::post('/keuangan', [KeuanganController::class, 'store'])->name('keuangan.store');
+Route::get('/keuangan/{id}', [KeuanganController::class, 'show'])->name('keuangan.show'); // Detail
+Route::put('/keuangan/{id}', [KeuanganController::class, 'update'])->name('keuangan.update');
+Route::delete('/keuangan/{id}', [KeuanganController::class, 'destroy'])->name('keuangan.destroy');
+
+// Tambahkan pembungkus Route::middleware(['auth'])
+// Route::middleware(['auth'])->group(function () {
+    
+//     // --- ROUTE SURAT (Sekarang sudah diproteksi) ---
+//     Route::get('/surat', [SuratController::class, 'index'])->name('surat.index');
+//     Route::post('/surat', [SuratController::class, 'store'])->name('surat.store');
+//     Route::get('/surat/{id}', [SuratController::class, 'show'])->name('surat.show');
+//     Route::put('/surat/{id}', [SuratController::class, 'update'])->name('surat.update');
+//     Route::delete('/surat/{id}', [SuratController::class, 'destroy'])->name('surat.destroy');
+// });
+
+// --- ROUTE SURAT ---
+Route::get('/surat', [SuratController::class, 'index'])->name('surat.index');
+Route::post('/surat-store', [SuratController::class, 'store'])->name('surat.store');
+Route::get('/surat/{id}', [SuratController::class, 'show'])->name('surat.show');
+Route::put('/surat/{id}', [SuratController::class, 'update'])->name('surat.update');
+Route::delete('/surat/{id}', [SuratController::class, 'destroy'])->name('surat.destroy');
+
+// --- ROUTE INVENTARIS ---
+// 1. Barang
+Route::get('/inventaris', [InventarisController::class, 'indexBarang'])->name('inventaris.barang.index');
+Route::post('/inventaris/barang', [InventarisController::class, 'storeBarang'])->name('inventaris.barang.store');
+Route::put('/inventaris/barang/{id}', [InventarisController::class, 'updateBarang'])->name('inventaris.barang.update');
+Route::delete('/inventaris/barang/{id}', [InventarisController::class, 'destroyBarang'])->name('inventaris.barang.destroy');
+
+// 2. Mutasi
+Route::post('/inventaris/mutasi', [InventarisController::class, 'storeMutasi'])->name('inventaris.mutasi.store');
 
 
 

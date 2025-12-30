@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         // Panggil seeder lain di sini
         $this->call([
             // MenuSeeder::class, 
-            MenuItemSeeder::class, 
+            // MenuItemSeeder::class, 
             // RoleSeeder::class, 
             // UnitSeeder::class, 
             // RoleSeeder::class, 
@@ -24,8 +24,16 @@ class DatabaseSeeder extends Seeder
             // UnitSeeder::class, 
             // RoleSeeder::class, 
             // UnitSeeder::class, 
-            // UserSeeder::class, 
-        ]);
+            // UserSeeder::class,
+            KategoriKeuanganSeeder::class,
+            InventarisBarangSeeder::class,        
+            KeuanganSeeder::class,
+            SuratSeeder::class,
+            InventarisMutasiSeeder::class,
+            ]);
+
+        
+        // User::factory(10)->create();
 
         // User::factory()->create([
         //     'name' => 'Admin User',
