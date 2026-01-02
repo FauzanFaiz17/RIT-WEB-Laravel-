@@ -49,7 +49,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'tanggal_lahir' => 'date'
+            'tanggal_lahir' => 'date',
         ];
     }
 
@@ -68,4 +68,14 @@ class User extends Authenticatable
 public function memberships() {
     return $this->hasMany(UnitUser::class);
 }
+    public function projects()
+    {
+        return $this->hasMany(Project::class)->withTimestamps();
+    }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_user')->withTimestamps();
+    } 
+    
 }

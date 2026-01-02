@@ -4,53 +4,51 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Project;
 use App\Models\Task;
-use App\Models\User;
 
 class TaskSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        $project = Project::first();
-
-        // Task utama
-        $task1 = Task::create([
-            'project_id' => $project->id,
-            'title' => 'Membuat Halaman Dashboard',
-            'description' => 'Pembuatan halaman dashboard utama.',
-            'start_date' => now(),
-            'end_date' => now()->addDays(7),
+        Task::Create([
+            'project_id' => 1,
+            'title' => 'Initial Task',
+            'description' => 'This is the first task for Project RIT',
+            'start_date' => '2025-12-15',
+            'end_date' => '2025-12-20',
+            'progress' => 0,
+            'done' => false,
+        ]);
+        Task::Create([
+            'project_id' => 1,
+            'title' => 'Second Task',
+            'description' => 'This is the second task for Project RIT',
+            'start_date' => '2025-12-21',
+            'end_date' => '2025-12-25',
+            'progress' => 100,
+            'done' => true,
+        ]);
+        Task::Create([
+            'project_id' => 2,
+            'title' => 'Initial Task for ABC',
+            'description' => 'This is the first task for Project ABC',
+            'start_date' => '2025-12-16',
+            'end_date' => '2025-12-22',
+            'progress' => 50,
+            'done' => false,
+        ]);
+        Task::Create([
+            'project_id' => 2,
+            'parent_id' => 3,
+            'title' => 'Subtask for ABC',
+            'description' => 'This is a subtask for the first task of Project ABC',
+            'start_date' => '2025-12-17',
+            'end_date' => '2025-12-20',
             'progress' => 20,
-            'is_done' => false,
+            'done' => false,
         ]);
-
-        // Subtask
-        $sub1 = Task::create([
-            'project_id' => $project->id,
-            'parent_id' => $task1->id,
-            'title' => 'Desain UI Dashboard',
-            'description' => 'Membuat tampilan UI.',
-            'start_date' => now(),
-            'end_date' => now()->addDays(3),
-            'progress' => 40,
-        ]);
-
-        $sub2 = Task::create([
-            'project_id' => $project->id,
-            'parent_id' => $task1->id,
-            'title' => 'Implementasi Frontend',
-            'description' => 'Implementasi menggunakan Tailwind + Vue/React.',
-            'start_date' => now()->addDays(2),
-            'end_date' => now()->addDays(7),
-            'progress' => 10,
-        ]);
-
-        // assign user ke task (jika sudah ada user)
-        $user = User::first();
-        if ($user) {
-            $task1->users()->attach($user->id);
-            $sub1->users()->attach($user->id);
-        }
     }
 }

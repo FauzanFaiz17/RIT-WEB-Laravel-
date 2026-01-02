@@ -17,7 +17,6 @@ class SidebarController extends Controller
                         'name' => 'Dashboard',
                         'subItems' => [
                             ['name' => 'Ecommerce', 'path' => '/'],
-                            ['name' => 'test', 'path' => '/'],
                             ['name' => 'Analytics', 'path' => '/analytics'],
                             ['name' => 'Marketing', 'path' => '/marketing'],
                             ['name' => 'CRM', 'path' => '/crm'],
@@ -27,15 +26,9 @@ class SidebarController extends Controller
                         ],
                     ],
                     [
-                        'icon' => 'bot-icon',
-                        'name' => 'AI Assistant',
-                        'new' => true,
-                        'subItems' => [
-                            ['name' => 'Text Generator', 'path' => '/text-generator'],
-                            ['name' => 'Image Generator', 'path' => '/image-generator'],
-                            ['name' => 'Code Generator', 'path' => '/code-generator'],
-                            ['name' => 'Video Generator', 'path' => '/video-generator'],
-                        ],
+                        'icon' => 'briefcase-icon',
+                        'name' => 'Projects',
+                        'path' => '/projects',
                     ],
                     [
                         'icon' => 'cart-icon',

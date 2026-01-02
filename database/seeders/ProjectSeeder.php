@@ -8,14 +8,22 @@ use App\Models\Project;
 
 class ProjectSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        Project::create([
-            'name' => 'Sistem Manajemen Organisasi',
-            'description' => 'Project utama untuk pengembangan aplikasi organisasi.',
-            'start_date' => now()->subDays(10),
-            'end_date' => now()->addDays(30),
+        Project::Create([
+            'user_id' => 1,
+            'name' => 'Project RIT',
+            'description' => 'WKWKKWKKWK',
             'status' => 'active',
+        ]);
+        Project::Create([
+            'user_id' => 2,
+            'name' => 'Project ABC',
+            'description' => 'Description for Project ABC',
+            'status' => 'draft',
         ]);
     }
 }

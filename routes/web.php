@@ -17,7 +17,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommunityUserController;
 
-
+use App\Models\Project;
 
 // dashboard pages
 Route::get('/', function () {
@@ -29,9 +29,33 @@ Route::get('/calendar', function () {
     return view('pages.calender', ['title' => 'Calendar']);
 })->name('calendar');
 
+// projects pages
+Route::get('/projects', function () {
+   $projects = Project::with('user')->latest()->get();
+    return view('pages.projects.project', ['title' => 'Projects', 'projects' => $projects]);
+})->name('project');
+
+// create a task (or subtask) for a project
+Route::post('projects/{project}/tasks', [ProjectController::class, 'addTask'])->name('projects.tasks.store');
+// task edit page
+Route::get('projects/{project}/tasks/{task}/edit', [ProjectController::class, 'editTask'])->name('projects.tasks.edit');
+// task update
+Route::patch('projects/{project}/tasks/{task}', [ProjectController::class, 'updateTask'])->name('projects.tasks.update');
+// subtask edit page
+Route::get('projects/{project}/tasks/{task}/subtasks/{subtask}/edit', [ProjectController::class, 'editSubtask'])->name('projects.tasks.subtasks.edit');
+// subtask update
+Route::patch('projects/{project}/tasks/{task}/subtasks/{subtask}', [ProjectController::class, 'updateSubtask'])->name('projects.tasks.subtasks.update');
+
+Route::resource('projects', ProjectController::class);
+
 // profile pages
 Route::get('/profile', function () {
-    return view('pages.profile', ['title' => 'Profile']);
+    $projects = Project::with('user')->get();
+
+    return view('pages.profile', [
+        'title' => 'Profile',
+        'projects' => $projects
+    ]);
 })->name('profile');
 
 // form pages

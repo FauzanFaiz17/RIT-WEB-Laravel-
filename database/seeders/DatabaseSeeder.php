@@ -25,11 +25,13 @@ class DatabaseSeeder extends Seeder
             // RoleSeeder::class, 
             // UnitSeeder::class, 
             // UserSeeder::class,
-            KategoriKeuanganSeeder::class,
-            InventarisBarangSeeder::class,        
-            KeuanganSeeder::class,
-            SuratSeeder::class,
-            InventarisMutasiSeeder::class,
+            // KategoriKeuanganSeeder::class,
+            // InventarisBarangSeeder::class,        
+            // KeuanganSeeder::class,
+            // SuratSeeder::class,
+            // InventarisMutasiSeeder::class,
+            ProjectSeeder::class,
+            TaskSeeder::class,
             ]);
 
         
