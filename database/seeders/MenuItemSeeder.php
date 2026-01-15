@@ -111,7 +111,7 @@ class MenuItemSeeder extends Seeder
             'menu_id' => $menu->id,
             'name' => 'Inventaris',
             'icon' => 'pages',
-            'path' => '/invenaris',
+            'path' => '/inventaris',
             'parent_id' => null,
             'order' => 4,
             'is_pro' => false,

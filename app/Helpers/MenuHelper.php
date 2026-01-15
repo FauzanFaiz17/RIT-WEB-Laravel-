@@ -67,7 +67,7 @@ class MenuHelper
     private static function getIconByPath($path)
     {
         $pathIconMap = [
-            '/inventaris/barang' => 'box',
+            '/inventaris' => 'box',
             '/surat' => 'email',
             '/keuangan' => 'wallet',
         ];

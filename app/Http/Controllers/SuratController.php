@@ -9,9 +9,28 @@ use Illuminate\Support\Facades\Storage;
 
 class SuratController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $surats = Surat::latest()->get();
+        $query = Surat::query();
+
+        // Filter Logic
+        if ($request->filled('tipe_surat')) {
+            $query->where('tipe_surat', $request->tipe_surat);
+        }
+        if ($request->filled('nomor_surat')) {
+            $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
+        }
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal', $request->tanggal);
+        }
+        if ($request->filled('perihal')) {
+            $query->where('perihal', 'like', '%' . $request->perihal . '%');
+        }
+        if ($request->filled('asal_tujuan')) {
+            $query->where('asal_tujuan', 'like', '%' . $request->asal_tujuan . '%');
+        }
+
+        $surats = $query->orderBy('tanggal', 'asc')->paginate(10)->withQueryString();
         return view('surat.index', compact('surats'));
     }
 
@@ -24,6 +43,16 @@ class SuratController extends Controller
             'asal_tujuan' => 'required',
             'tanggal' => 'required|date',
             'file_surat.*' => 'nullable|mimes:pdf,jpg,png|max:2048'
+        ], [
+            'nomor_surat.required' => 'Nomor surat wajib diisi.',
+            'tipe_surat.required' => 'Tipe surat wajib dipilih.',
+            'tipe_surat.in' => 'Tipe surat tidak valid.',
+            'perihal.required' => 'Perihal surat wajib diisi.',
+            'asal_tujuan.required' => 'Asal/Tujuan surat wajib diisi.',
+            'tanggal.required' => 'Tanggal surat wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'file_surat.*.mimes' => 'Format file yang diperbolehkan: pdf, jpg, png.',
+            'file_surat.*.max' => 'Ukuran maksimal file adalah 2MB.'
         ]);
 
       
@@ -56,6 +85,14 @@ class SuratController extends Controller
             'perihal' => 'required',
             'asal_tujuan' => 'required',
             'tanggal' => 'required|date'
+        ], [
+            'nomor_surat.required' => 'Nomor surat wajib diisi.',
+            'tipe_surat.required' => 'Tipe surat wajib dipilih.',
+            'tipe_surat.in' => 'Tipe surat tidak valid.',
+            'perihal.required' => 'Perihal surat wajib diisi.',
+            'asal_tujuan.required' => 'Asal/Tujuan surat wajib diisi.',
+            'tanggal.required' => 'Tanggal surat wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
         ]);
 
         $surat = Surat::findOrFail($id);
@@ -72,7 +109,7 @@ class SuratController extends Controller
         if ($request->hasFile('file_surat')) {
             $request->validate(['file_surat.*' => 'nullable|mimes:pdf,jpg,png|max:2048']);
             foreach ($request->file('file_surat') as $file) {
-                $path = $file->store('public/arsip-surat');
+                $path = $file->store('arsip-surat', 'public');
                 $surat->buktis()->create(['file_path' => $path]);
             }
         }
@@ -84,7 +121,7 @@ class SuratController extends Controller
     {
         $surat = Surat::findOrFail($id);
         foreach($surat->buktis as $bukti){
-            Storage::delete($bukti->file_path);
+            Storage::disk('public')->delete($bukti->file_path);
         }
         $surat->delete();
         return redirect()->route('surat.index')->with('success', 'Surat Dihapus');

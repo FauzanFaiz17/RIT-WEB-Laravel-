@@ -1,4 +1,4 @@
-<div>
+<div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" x-transition.duration.500ms>
     {{-- 1. SUCCESS ALERT --}}
     @if (session('success'))
         <div class="mb-6">
@@ -35,7 +35,7 @@
     {{-- 4. VALIDATION ERROR (Otomatis dari Laravel Validate) --}}
     @if ($errors->any())
         <div class="mb-6">
-            <x-ui.alert variant="error" title="Gagal Menyimpan Data">
+            <x-ui.alert variant="error" title="Input Tidak Valid">
                 {{-- Menggunakan Slot Content sesuai contoh template --}}
                 <ul class="text-sm text-gray-500 dark:text-gray-400 list-disc list-inside space-y-1 mt-2">
                     @foreach ($errors->all() as $error)

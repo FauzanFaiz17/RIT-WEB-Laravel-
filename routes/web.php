@@ -173,7 +173,7 @@ Route::get('/keuangan/{id}', [KeuanganController::class, 'show'])->name('keuanga
 Route::put('/keuangan/{id}', [KeuanganController::class, 'update'])->name('keuangan.update');
 Route::delete('/keuangan/{id}', [KeuanganController::class, 'destroy'])->name('keuangan.destroy');
 
-// Tambahkan pembungkus Route::middleware(['auth'])
+
 // Route::middleware(['auth'])->group(function () {
     
 //     // --- ROUTE SURAT (Sekarang sudah diproteksi) ---
@@ -277,6 +277,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    // Route lainnya...
+    // Route lainnya
     Route::put('/profile/photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.photo.update');
 });

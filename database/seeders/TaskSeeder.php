@@ -14,22 +14,22 @@ class TaskSeeder extends Seeder
     public function run(): void
     {
         Task::Create([
-            'project_id' => 1,
+            'project_id' => 2,
             'title' => 'Initial Task',
             'description' => 'This is the first task for Project RIT',
             'start_date' => '2025-12-15',
             'end_date' => '2025-12-20',
             'progress' => 0,
-            'done' => false,
+            'is_done' => false,
         ]);
         Task::Create([
-            'project_id' => 1,
+            'project_id' => 3,
             'title' => 'Second Task',
             'description' => 'This is the second task for Project RIT',
             'start_date' => '2025-12-21',
             'end_date' => '2025-12-25',
             'progress' => 100,
-            'done' => true,
+            'is_done' => true,
         ]);
         Task::Create([
             'project_id' => 2,
@@ -38,7 +38,7 @@ class TaskSeeder extends Seeder
             'start_date' => '2025-12-16',
             'end_date' => '2025-12-22',
             'progress' => 50,
-            'done' => false,
+            'is_done' => false,
         ]);
         Task::Create([
             'project_id' => 2,
@@ -48,7 +48,7 @@ class TaskSeeder extends Seeder
             'start_date' => '2025-12-17',
             'end_date' => '2025-12-20',
             'progress' => 20,
-            'done' => false,
+            'is_done' => false,
         ]);
     }
 }
