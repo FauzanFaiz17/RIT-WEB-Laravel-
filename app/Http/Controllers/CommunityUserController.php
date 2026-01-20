@@ -8,9 +8,11 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\UnitUser; 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CommunityUserController extends Controller
 {
+    use AuthorizesRequests;
     
     // Bagian List Divisions
     public function indexDivisions($name)
@@ -71,17 +73,26 @@ class CommunityUserController extends Controller
     }
 
     // Bagian Create Member
-    public function create()
+    public function create(Request $request)
     {
+        $unitId = $request->query('unit_id');
+
+        // 🔐 AUTHORIZATION (INI KUNCI)
+        $this->authorize('create', [UnitUser::class, $unitId]);
+
         $users = User::all();
         $roles = Role::all();
         $communities = Unit::whereNull('parent_id')->with('children')->get();
         $divisions = Unit::whereNotNull('parent_id')->get();
 
-        $UnitId = request()->query('unit_id');
-        $selectedUnit = $UnitId ? Unit::with('parent')->find($UnitId) : null ;
+        $selectedUnit = $unitId
+            ? Unit::with('parent')->find($unitId)
+            : null;
 
-        return view('community_user.create', compact('users', 'roles', 'communities','divisions', 'selectedUnit'));
+        return view(
+            'community_user.create',
+            compact('users', 'roles', 'communities', 'divisions', 'selectedUnit')
+        );
     }
 
     // Bagian Store Member
@@ -117,13 +128,20 @@ class CommunityUserController extends Controller
     // Bagian Edit Member
     public function edit($id)
     {
-        $member = UnitUser::findOrFail($id);        
+        $member = UnitUser::findOrFail($id);
+
+        // 🔐 AUTHORIZATION
+        $this->authorize('update', $member);
+
         $users = User::all();
         $roles = Role::all();
         $communities = Unit::whereNull('parent_id')->with('children')->get();
         $divisions = Unit::whereNotNull('parent_id')->get();
 
-        return view('community_user.edit', compact('member', 'users', 'roles', 'communities','divisions'));
+        return view(
+            'community_user.edit',
+            compact('member', 'users', 'roles', 'communities', 'divisions')
+        );
     }
 
     
@@ -152,12 +170,17 @@ class CommunityUserController extends Controller
     public function destroy($id)
     {
         $member = UnitUser::findOrFail($id);
-        $unitName = $member->unit->name; 
+
+        // 🔐 AUTHORIZATION
+        $this->authorize('delete', $member);
+
+        $unitName = $member->unit->name;
+
         $member->delete();
 
-        return redirect()->route('member.list', $unitName)
-                         ->with('success', 'Anggota berhasil dihapus.');
+        return redirect()
+            ->route('member.list', $unitName)
+            ->with('success', 'Anggota berhasil dihapus.');
     }
-
     
 }

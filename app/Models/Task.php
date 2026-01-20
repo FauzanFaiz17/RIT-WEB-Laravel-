@@ -14,7 +14,7 @@ class Task extends Model
         'start_date',
         'end_date',
         'progress',
-        'done'
+        'status'
     ];
 
     /**
@@ -24,7 +24,6 @@ class Task extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'progress' => 'integer',
-        'done' => 'boolean',
     ];
     
     public function project()
@@ -36,10 +35,7 @@ class Task extends Model
     {
         return $this->belongsTo(Task::class, 'parent_id');
     }
-    public function children()
-    {
-        return $this->hasMany(Task::class, 'parent_id');
-    }
+ 
     
     public function subtasks()
     {

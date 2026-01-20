@@ -1,4 +1,3 @@
-<!-- yah abis batre -- >
 
 @extends('layouts.app')
 

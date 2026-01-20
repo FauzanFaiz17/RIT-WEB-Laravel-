@@ -20,7 +20,7 @@ class TaskSeeder extends Seeder
             'start_date' => '2025-12-15',
             'end_date' => '2025-12-20',
             'progress' => 0,
-            'done' => false,
+            'status' => 'todo',
         ]);
         Task::Create([
             'project_id' => 1,
@@ -29,7 +29,7 @@ class TaskSeeder extends Seeder
             'start_date' => '2025-12-21',
             'end_date' => '2025-12-25',
             'progress' => 100,
-            'done' => true,
+            'status' => 'done',
         ]);
         Task::Create([
             'project_id' => 2,
@@ -38,7 +38,7 @@ class TaskSeeder extends Seeder
             'start_date' => '2025-12-16',
             'end_date' => '2025-12-22',
             'progress' => 50,
-            'done' => false,
+            'status' => 'todo',
         ]);
         Task::Create([
             'project_id' => 2,
@@ -48,7 +48,7 @@ class TaskSeeder extends Seeder
             'start_date' => '2025-12-17',
             'end_date' => '2025-12-20',
             'progress' => 20,
-            'done' => false,
+            'status' => 'todo',
         ]);
     }
 }

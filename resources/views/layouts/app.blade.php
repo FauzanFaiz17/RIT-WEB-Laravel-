@@ -108,7 +108,10 @@
         }
     };
     window.addEventListener('resize', checkMobile);">
-
+    {{-- ALERT HARUS DI SINI --}}
+    <div class="relative z-[999999]">
+        <x-common.alert-manager />
+    </div>
     {{-- preloader --}}
     <x-common.preloader/>
     {{-- preloader end --}}
@@ -128,8 +131,7 @@
             <!-- app header end -->
             <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
               
-              {{-- PASANG DI SINI --}}
-              <x-common.alert-manager />
+
               
                 @yield('content')
                 

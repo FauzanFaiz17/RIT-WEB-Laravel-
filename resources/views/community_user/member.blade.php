@@ -35,11 +35,13 @@
                 </a>
 
                 {{-- Tombol Tambah (Warna Dipaksa Biru) --}}
-                <a href="{{ route('community_user.create', ['unit_id' => $currentUnitId]) }}"
-                    class="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-lg bg-[#3C50E0] px-4 py-2.5 text-sm font-medium text-white shadow-theme-xs hover:bg-opacity-90 transition !bg-[#3C50E0] !text-white">
-                    {!! $AddIcon !!}
-                    <span class="!text-white whitespace-nowrap">Tambah Anggota</span>
-                </a>
+                @can('create', [\App\Models\UnitUser::class, $currentUnitId])
+                    <a href="{{ route('community_user.create', ['unit_id' => $currentUnitId]) }}"
+                        class="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-lg bg-[#3C50E0] px-4 py-2.5 text-sm font-medium text-white shadow-theme-xs hover:bg-opacity-90 transition !bg-[#3C50E0] !text-white">
+                         <span class="!text-white whitespace-nowrap">Tambah Anggota</span>
+                    </a>
+                @endcan
+
             </div>
         </div>
 
@@ -114,24 +116,29 @@
                                     {{ $data->user->semester ?? '-' }}</td>
                                 <td class="px-5 py-4 text-right">
                                     <div class="flex items-center justify-end gap-3">
-                                        <a href="{{ route('community_user.edit', $data->id) }}"
-                                            class="text-gray-500 hover:text-primary">
-                                            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.69 1.07l-3.266 1.053a.375.375 0 01-.48-.481L6.2 14.456a4.5 4.5 0 011.069-1.691l7.759-7.761c.229-.228.537-.228.766 0z" />
-                                            </svg>
-                                        </a>
-                                        <form action="{{ route('community_user.destroy', $data->id) }}" method="POST"
-                                            onsubmit="return confirm('Hapus?')">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="text-gray-500 hover:text-red-500">
-                                                <svg class="size-5" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
+                                        @can('update', $data)
+                                            <a href="{{ route('community_user.edit', $data->id) }}"
+                                                class="text-gray-500 hover:text-primary">
+                                                <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.69 1.07l-3.266 1.053a.375.375 0 01-.48-.481L6.2 14.456a4.5 4.5 0 011.069-1.691l7.759-7.761c.229-.228.537-.228.766 0z" />
                                                 </svg>
-                                            </button>
-                                        </form>
+                                            </a>
+                                        @endcan
+
+                                        @can('delete', $data)
+                                            <form action="{{ route('community_user.destroy', $data->id) }}" method="POST"
+                                                onsubmit="return confirm('Hapus?')">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="text-gray-500 hover:text-red-500">
+                                                    <svg class="size-5" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

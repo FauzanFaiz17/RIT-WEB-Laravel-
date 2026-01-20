@@ -39,11 +39,23 @@
             </div>
 
             <div>
-                <label class="inline-flex items-center gap-2">
-                    <input type="checkbox" name="done" value="1" {{ old('done', $subtask->done) ? 'checked' : '' }}>
-                    <span class="text-sm font-medium text-white">Done</span>
-                </label>
+                <label class="block text-sm font-medium text-white">Status</label>
+                <select name="status"
+                    class="w-full rounded-lg border border-gray-300 px-4 py-2
+                        focus:border-blue-500 focus:ring-blue-500
+                        dark:border-gray-700 dark:bg-gray-900 dark:text-white">
+                    <option value="todo" {{ old('status', $subtask->status) === 'todo' ? 'selected' : '' }}>
+                        To Do
+                    </option>
+                    <option value="in_progress" {{ old('status', $subtask->status) === 'in_progress' ? 'selected' : '' }}>
+                        In Progress
+                    </option>
+                    <option value="done" {{ old('status', $subtask->status) === 'done' ? 'selected' : '' }}>
+                        Done
+                    </option>
+                </select>
             </div>
+
 
             <div class="flex justify-end gap-3 pt-4">
                 <a href="{{ route('projects.show', $project) }}" class="rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100">Cancel</a>

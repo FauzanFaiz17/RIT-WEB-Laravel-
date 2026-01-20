@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -29,25 +30,24 @@ Route::get('/calendar', function () {
     return view('pages.calender', ['title' => 'Calendar']);
 })->name('calendar');
 
-// projects pages
-Route::get('/projects', function () {
-   $projects = Project::with('user')->latest()->get();
-    return view('pages.projects.project', ['title' => 'Projects', 'projects' => $projects]);
-})->name('project');
 
-// create a task (or subtask) for a project
-Route::post('projects/{project}/tasks', [ProjectController::class, 'addTask'])->name('projects.tasks.store');
-// task edit page
-Route::get('projects/{project}/tasks/{task}/edit', [ProjectController::class, 'editTask'])->name('projects.tasks.edit');
-// task update
-Route::patch('projects/{project}/tasks/{task}', [ProjectController::class, 'updateTask'])->name('projects.tasks.update');
-// subtask edit page
-Route::get('projects/{project}/tasks/{task}/subtasks/{subtask}/edit', [ProjectController::class, 'editSubtask'])->name('projects.tasks.subtasks.edit');
-// subtask update
-Route::patch('projects/{project}/tasks/{task}/subtasks/{subtask}', [ProjectController::class, 'updateSubtask'])->name('projects.tasks.subtasks.update');
 
+
+Route::middleware(['auth'])->group(function () {
+
+    // Project
+    Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+    Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
+    Route::get('/projects/destroy', [ProjectController::class, 'destroy'])->name('projects.destroy');
+
+    // Task
+    Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+});
 Route::resource('projects', ProjectController::class);
-
 // profile pages
 Route::get('/profile', function () {
     $projects = Project::with('user')->get();
@@ -280,3 +280,14 @@ Route::middleware(['auth'])->group(function () {
     // Route lainnya...
     Route::put('/profile/photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.photo.update');
 });
+
+Route::get('/notifications/{notification}/read', function ($notificationId) {
+    $notification = auth()->user()
+        ->notifications()
+        ->where('id', $notificationId)
+        ->firstOrFail();
+
+    $notification->markAsRead();
+
+    return redirect($notification->data['url']);
+})->name('notifications.read');
