@@ -12,36 +12,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Panggil seeder lain di sini
+        // Panggil seeder lain
         $this->call([
-            // MenuSeeder::class, 
-            // MenuItemSeeder::class, 
-            // RoleSeeder::class, 
-            // UnitSeeder::class, 
-            // RoleSeeder::class, 
-            // UnitSeeder::class, 
-            // RoleSeeder::class, 
-            // UnitSeeder::class, 
-            // RoleSeeder::class, 
-            // UnitSeeder::class, 
-            // UserSeeder::class,
-            // KategoriKeuanganSeeder::class,
-            // InventarisBarangSeeder::class,        
-            // KeuanganSeeder::class,
-            // SuratSeeder::class,
-            // InventarisMutasiSeeder::class,
+            MenuSeeder::class, 
+            MenuItemSeeder::class, 
+            RoleSeeder::class, 
+            UnitSeeder::class, 
+            RoleSeeder::class, 
+            UnitSeeder::class, 
+            RoleSeeder::class, 
+            UnitSeeder::class, 
+            RoleSeeder::class, 
+            UnitSeeder::class, 
+            UserSeeder::class,
+            KategoriKeuanganSeeder::class,
+            InventarisBarangSeeder::class,        
+            KeuanganSeeder::class,
+            SuratSeeder::class,
+            InventarisMutasiSeeder::class,
             ProjectSeeder::class,
             TaskSeeder::class,
             ]);
-
-        
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Admin User',
-        //     'email' => 'admin@gmail.com',
-        //     'password' => bcrypt('password'),
-          
-        // ]);
     }
 }

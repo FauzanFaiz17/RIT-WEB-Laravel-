@@ -11,10 +11,26 @@ use Illuminate\Support\Facades\Storage;
 
 class InventarisController extends Controller
 {
-    // --- BAGIAN BARANG (MASTER) ---
-    public function indexBarang()
+    // BARANG 
+    public function indexBarang(Request $request)
     {
-        $barangs = InventarisBarang::with('buktis')->get();
+        $query = InventarisBarang::with('buktis');
+
+        // Filter Logic
+        if ($request->filled('nama_barang')) {
+            $query->where('nama_barang', 'like', '%' . $request->nama_barang . '%');
+        }
+        if ($request->filled('jumlah')) {
+            $query->where('jumlah', $request->jumlah);
+        }
+        if ($request->filled('terpakai')) {
+            $query->where('terpakai', $request->terpakai);
+        }
+        if ($request->filled('stok')) {
+            $query->where('stok', $request->stok);
+        }
+
+        $barangs = $query->oldest()->paginate(10)->withQueryString();
         return view('inventaris.barang.index', compact('barangs'));
     }
 
@@ -24,7 +40,19 @@ class InventarisController extends Controller
             'nama_barang' => 'required', 
             'jumlah' => 'required|integer|min:0',
             'terpakai' => 'required|integer|min:0|lte:jumlah',
-            'bukti' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'bukti.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'nama_barang.required' => 'Nama barang wajib diisi.',
+            'jumlah.required' => 'Jumlah barang wajib diisi.',
+            'jumlah.integer' => 'Jumlah barang harus berupa angka.',
+            'jumlah.min' => 'Jumlah barang tidak boleh negatif.',
+            'terpakai.required' => 'Jumlah barang terpakai wajib diisi.',
+            'terpakai.integer' => 'Jumlah terpakai harus berupa angka.',
+            'terpakai.min' => 'Jumlah terpakai tidak boleh negatif.',
+            'terpakai.lte' => 'Jumlah terpakai tidak boleh melebihi total jumlah barang.',
+            'bukti.*.image' => 'File bukti harus berupa gambar.',
+            'bukti.*.mimes' => 'Format file yang diperbolehkan: jpeg, png, jpg, gif.',
+            'bukti.*.max' => 'Ukuran maksimal file adalah 2MB.'
         ]);
 
         $data = [
@@ -36,10 +64,12 @@ class InventarisController extends Controller
 
         $barang = InventarisBarang::create($data);
 
-        // Handle file upload menggunakan polymorphic relationship
+        // Handle file upload pake array
         if ($request->hasFile('bukti')) {
-            $path = $request->file('bukti')->store('bukti_inventaris', 'public');
-            $barang->buktis()->create(['file_path' => $path]);
+            foreach($request->file('bukti') as $file) {
+                $path = $file->store('bukti_inventaris', 'public');
+                $barang->buktis()->create(['file_path' => $path]);
+            }
         }
 
         return back()->with('success', 'Barang Baru Ditambahkan');
@@ -51,7 +81,19 @@ class InventarisController extends Controller
             'nama_barang' => 'required',
             'jumlah' => 'required|integer|min:0',
             'terpakai' => 'required|integer|min:0|lte:jumlah',
-            'bukti' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'bukti.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'nama_barang.required' => 'Nama barang wajib diisi.',
+            'jumlah.required' => 'Jumlah barang wajib diisi.',
+            'jumlah.integer' => 'Jumlah barang harus berupa angka.',
+            'jumlah.min' => 'Jumlah barang tidak boleh negatif.',
+            'terpakai.required' => 'Jumlah barang terpakai wajib diisi.',
+            'terpakai.integer' => 'Jumlah terpakai harus berupa angka.',
+            'terpakai.min' => 'Jumlah terpakai tidak boleh negatif.',
+            'terpakai.lte' => 'Jumlah terpakai tidak boleh melebihi total jumlah barang.',
+            'bukti.*.image' => 'File bukti harus berupa gambar.',
+            'bukti.*.mimes' => 'Format file yang diperbolehkan: jpeg, png, jpg, gif.',
+            'bukti.*.max' => 'Ukuran maksimal file adalah 2MB.'
         ]);
         
         $barang = InventarisBarang::findOrFail($id);
@@ -65,16 +107,12 @@ class InventarisController extends Controller
 
         $barang->update($data);
 
-        // Handle file upload menggunakan polymorphic relationship
+        // Handle file upload yg udah ada
         if ($request->hasFile('bukti')) {
-            // Hapus bukti lama jika ada
-            foreach($barang->buktis as $bukti){
-                Storage::disk('public')->delete($bukti->file_path);
-                $bukti->delete();
+            foreach($request->file('bukti') as $file) {
+                $path = $file->store('bukti_inventaris', 'public');
+                $barang->buktis()->create(['file_path' => $path]);
             }
-            // Simpan bukti baru
-            $path = $request->file('bukti')->store('bukti_inventaris', 'public');
-            $barang->buktis()->create(['file_path' => $path]);
         }
 
         return back()->with('success', 'Data Barang Diperbarui');
@@ -84,7 +122,7 @@ class InventarisController extends Controller
     {
         $barang = InventarisBarang::findOrFail($id);
         
-        // Hapus bukti jika ada
+        // Hapus bukti kalo ada
         foreach($barang->buktis as $bukti){
             Storage::disk('public')->delete($bukti->file_path);
             $bukti->delete();

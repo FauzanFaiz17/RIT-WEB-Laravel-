@@ -25,10 +25,19 @@ class ProjectController extends Controller
         // Recursive tree builder
         $rows = $this->buildTaskTree($tasks);
 
+
+        // untuk kanban
+        $kanbanTasks = $project->tasks()
+            ->with('users')
+            // ->whereNull('parent_id') // opsional (biasanya Kanban hanya task utama)
+            ->get()
+            ->groupBy('status');
+
         return view('pages.projects.show', compact(
             'project',
             'users',
-            'rows'
+            'rows',
+            'kanbanTasks'
         ));
     }
 

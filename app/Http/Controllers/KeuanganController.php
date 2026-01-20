@@ -30,7 +30,7 @@ class KeuanganController extends Controller
             $query->where('kategori_keuangan_id', $request->kategori_id);
         }
 
-        // Sorting: Transaksi terbaru di atas
+        // Sorting transaksi terbaru di atas
         $query->orderBy('tanggal', 'asc')->orderBy('created_at', 'asc');
 
         $keuangans = $query->paginate(10)->withQueryString();
@@ -61,14 +61,27 @@ class KeuanganController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(['nominal' => str_replace('.', '', $request->nominal)]);
         $request->validate([
             'kategori_keuangan_id' => 'required',
             'new_category_name' => 'required_if:kategori_keuangan_id,new',
-            'uraian' => 'required',
+            'uraian' => 'nullable',
             'jenis' => 'required|in:1,2',
             'nominal' => 'required|numeric',
             'tanggal' => 'required|date',
             'bukti_file.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ], [
+            'kategori_keuangan_id.required' => 'Kategori transaksi wajib dipilih.',
+            'new_category_name.required_if' => 'Nama kategori baru wajib diisi jika memilih opsi Buat Kategori Baru.',
+            'jenis.required' => 'Jenis transaksi wajib dipilih.',
+            'jenis.in' => 'Jenis transaksi tidak valid.',
+            'nominal.required' => 'Nominal uang wajib diisi.',
+            'nominal.numeric' => 'Nominal harus berupa angka.',
+            'tanggal.required' => 'Tanggal transaksi wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'bukti_file.*.image' => 'File bukti harus berupa gambar.',
+            'bukti_file.*.mimes' => 'Format file yang diperbolehkan: jpeg, png, jpg.',
+            'bukti_file.*.max' => 'Ukuran maksimal file adalah 2MB.'
         ]);
 
         $kategoriId = $request->kategori_keuangan_id;
@@ -98,17 +111,28 @@ class KeuanganController extends Controller
             }
         }
 
-        return redirect()->route('keuangan.index')->with('success', 'Transaksi berhasil dicatat');
+        return redirect()->route('keuangan.index')->with('success', 'Transaksi berhasil disimpan!');
     }
 
     public function update(Request $request, $id)
     {
+        // Remove dots from nominal before validation/usage
+        $request->merge(['nominal' => str_replace('.', '', $request->nominal)]);
+
         $request->validate([
             'jenis' => 'required|in:1,2',
             'kategori_keuangan_id' => 'required',
             'nominal' => 'required|numeric',
-            'uraian' => 'required',
+            'uraian' => 'nullable',
             'tanggal' => 'required|date',
+        ], [
+            'jenis.required' => 'Jenis transaksi wajib dipilih.',
+            'jenis.in' => 'Jenis transaksi tidak valid.',
+            'kategori_keuangan_id.required' => 'Kategori transaksi wajib dipilih.',
+            'nominal.required' => 'Nominal uang wajib diisi.',
+            'nominal.numeric' => 'Nominal harus berupa angka.',
+            'tanggal.required' => 'Tanggal transaksi wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
         ]);
 
         $keuangan = Keuangan::findOrFail($id);
@@ -122,7 +146,14 @@ class KeuanganController extends Controller
             'keterangan' => $request->keterangan ?? $keuangan->keterangan
         ]);
 
-        return redirect()->route('keuangan.index')->with('success', 'Data berhasil diperbarui');
+        if ($request->hasFile('bukti_file')) {
+            foreach ($request->file('bukti_file') as $file) {
+                $path = $file->store('bukti-keuangan', 'public');
+                $keuangan->buktis()->create(['file_path' => $path]);
+            }
+        }
+
+        return redirect()->route('keuangan.index')->with('success', 'Perubahan berhasil disimpan!');
     }
 
     public function destroy($id)
@@ -130,12 +161,12 @@ class KeuanganController extends Controller
         try {
             $keuangan = Keuangan::findOrFail($id);
             foreach($keuangan->buktis as $bukti){
-                Storage::delete($bukti->file_path);
+                Storage::disk('public')->delete($bukti->file_path);
             }
             $keuangan->delete();
-            return redirect()->route('keuangan.index')->with('success', 'Data berhasil dihapus');
+            return redirect()->route('keuangan.index')->with('success', 'Data berhasil dihapus!');
         } catch (\Exception $e) {
-            return redirect()->route('keuangan.index')->with('error', 'Gagal menghapus data');
+            return redirect()->route('keuangan.index')->with('error', 'Gagal menghapus data.');
         }
     }
 

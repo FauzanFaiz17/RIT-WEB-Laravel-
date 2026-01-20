@@ -46,6 +46,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
     Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+
+    // untuk kanban
+    Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.update-status');
 });
 Route::resource('projects', ProjectController::class);
 // profile pages
@@ -173,7 +176,7 @@ Route::get('/keuangan/{id}', [KeuanganController::class, 'show'])->name('keuanga
 Route::put('/keuangan/{id}', [KeuanganController::class, 'update'])->name('keuangan.update');
 Route::delete('/keuangan/{id}', [KeuanganController::class, 'destroy'])->name('keuangan.destroy');
 
-// Tambahkan pembungkus Route::middleware(['auth'])
+
 // Route::middleware(['auth'])->group(function () {
     
 //     // --- ROUTE SURAT (Sekarang sudah diproteksi) ---
@@ -277,7 +280,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    // Route lainnya...
+    // Route lainnya
     Route::put('/profile/photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.photo.update');
 });
 

@@ -138,4 +138,22 @@ class TaskController extends Controller
         $task->delete();
     }
 
+
+    // untuk kanban
+    public function updateStatus(Request $request, Task $task)
+    {
+        $request->validate([
+            'status' => 'required|in:todo,in_progress,done',
+        ]);
+
+        $task->update([
+            'status' => $request->status,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Task status updated',
+        ]);
+    }
+
 }

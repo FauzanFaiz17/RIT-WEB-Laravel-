@@ -6,7 +6,7 @@ Aplikasi ini dibangun menggunakan **Laravel**, **MySQL**, dan **TailAdmin** seba
 
 ---
 
-## 🚀 Fitur Utama
+## Fitur Utama
 
 ### 1. Manajemen Struktur Organisasi & Anggota
 
@@ -41,7 +41,7 @@ Aplikasi ini dibangun menggunakan **Laravel**, **MySQL**, dan **TailAdmin** seba
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
 * **Backend**: Laravel
 * **Frontend**: TailAdmin (Tailwind CSS)
@@ -49,20 +49,20 @@ Aplikasi ini dibangun menggunakan **Laravel**, **MySQL**, dan **TailAdmin** seba
 * **Version Control**: Git & GitHub
 ---
 
-## ✨ Fitur Lainnya
+## Fitur Lainnya
 
-* 🚀 **Laravel 12 Core** - Built on the latest Laravel release with improved routing, security, and Blade templating
-* 🎨 **Tailwind CSS v4** - Utility-first styling for rapid, consistent UI development
-* ⚡ **Alpine.js Interactivity** - Lightweight reactivity without a heavy JavaScript framework
-* ⚡ **Sortable Js** - Interaktif tampilan perpindahan menu
-* 📦 **Vite Build System** - Fast dev server, instant HMR, and optimized production builds
-* 📱 **Fully Responsive Layouts** - Smooth, mobile-first design that adapts across all screen sizes
-* 🌙 **Built-in Dark Mode** - Ready-to-use modern dark theme for better usability and aesthetics
-* 📊 **Advanced UI Components** - Charts, data tables, forms, calendars, modals, and reusable blocks for complex dashboards
-* 🎯 **Production-Ready Dashboard UI** - Clean, modern interface crafted for real apps, not placeholder demos
+* **Laravel 12 Core** - Built on the latest Laravel release with improved routing, security, and Blade templating
+*  **Tailwind CSS v4** - Utility-first styling for rapid, consistent UI development
+*  **Alpine.js Interactivity** - Lightweight reactivity without a heavy JavaScript framework
+*  **Sortable Js** - Interaktif tampilan perpindahan menu
+*  **Vite Build System** - Fast dev server, instant HMR, and optimized production builds
+*  **Fully Responsive Layouts** - Smooth, mobile-first design that adapts across all screen sizes
+*  **Built-in Dark Mode** - Ready-to-use modern dark theme for better usability and aesthetics
+*  **Advanced UI Components** - Charts, data tables, forms, calendars, modals, and reusable blocks for complex dashboards
+*  **Production-Ready Dashboard UI** - Clean, modern interface crafted for real apps, not placeholder demos
 
 ---
-## 📋 Requirements
+## Requirements
 Untuk Menginstall Aplikasi ini pastikan environtment anda memenuhi :
 
 * **PHP 8.2+**
@@ -82,7 +82,7 @@ npm -v
 ```
 
 ---
-## 📦 Instalasi
+##  Instalasi
 
 Ikuti langkah-langkah berikut untuk menjalankan aplikasi ini secara lokal:
 
@@ -104,7 +104,7 @@ composer install
 npm install
 ```
 
-atau jika kamu lebih prefer yarn atau pnpm:
+atau jika prefer yarn atau pnpm:
 
 ```bash
 # Using yarn
@@ -195,7 +195,7 @@ composer run dev
 ```
 
 
-## 👤 Role & Akses (Opsional)
+## Role & Akses (Opsional)
 
 * **Admin**: Mengelola seluruh fitur aplikasi
 * **Pengurus**: Mengelola data sesuai divisi
@@ -203,7 +203,7 @@ composer run dev
 
 ---
 
-## 📁 Struktur Folder (Ringkas)
+##  Struktur Folder (Ringkas)
 
 
 ```
@@ -246,7 +246,7 @@ RIT-WEB-Laravel-/
 
 ---
 
-## 🤝 Kontribusi
+##  Kontribusi
 
 Kontribusi sangat terbuka untuk pengembangan aplikasi ini.
 
@@ -259,13 +259,13 @@ Langkah kontribusi:
 
 ---
 
-## 📄 Lisensi
+##  Lisensi
 
 Aplikasi ini dikembangkan untuk kebutuhan internal organisasi **Republic of Information Technology (RIT)**.
 
 ---
 
-## 📬 Kontak
+## Kontak
 
 Jika terdapat pertanyaan atau saran, silakan hubungi:
 
@@ -274,6 +274,5 @@ Jika terdapat pertanyaan atau saran, silakan hubungi:
 
 ---
 ![TailAdmin - Next.js Dashboard Preview](./profile.png)
-> Dibuat dengan ❤️ untuk mendukung manajemen organisasi RIT yang lebih profesional dan terintegrasi.
 
 - by WEB DIVISION RIT

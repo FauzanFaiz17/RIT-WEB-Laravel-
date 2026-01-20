@@ -5,14 +5,21 @@
 
 <div {{ $attributes->merge(['class' => 'rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]']) }}>
     <!-- Card Header -->
-    <div class="px-6 py-5">
-        <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
-            {{ $title }}
-        </h3>
-        @if($desc)
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {{ $desc }}
-            </p>
+    <div class="flex items-center justify-between px-6 py-5">
+        <div>
+            <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+                {{ $title }}
+            </h3>
+            @if($desc)
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {{ $desc }}
+                </p>
+            @endif
+        </div>
+        @if(isset($action))
+            <div class="ml-auto">
+                {{ $action }}
+            </div>
         @endif
     </div>
 

@@ -14,7 +14,7 @@ class TaskSeeder extends Seeder
     public function run(): void
     {
         Task::Create([
-            'project_id' => 1,
+            'project_id' => 2,
             'title' => 'Initial Task',
             'description' => 'This is the first task for Project RIT',
             'start_date' => '2025-12-15',
@@ -23,7 +23,7 @@ class TaskSeeder extends Seeder
             'status' => 'todo',
         ]);
         Task::Create([
-            'project_id' => 1,
+            'project_id' => 3,
             'title' => 'Second Task',
             'description' => 'This is the second task for Project RIT',
             'start_date' => '2025-12-21',
