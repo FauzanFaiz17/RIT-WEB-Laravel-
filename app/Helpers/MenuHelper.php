@@ -23,7 +23,7 @@ class MenuHelper
                 $items[] = [
                     'icon' => $item->icon,
                     'name' => $item->name,
-                    'path' => $item->path,
+                    'path' => $item->path === '/' ? '/dashboard' : $item->path,
                     'subItems' => self::getSubItems($item->id)
                 ];
             }
@@ -54,7 +54,7 @@ class MenuHelper
 
             $subItems[] = [
                 'name' => $s->name,
-                'path' => $s->path,
+                'path' => $s->path === '/' ? '/dashboard' : $s->path,
                 'icon' => $icon, // Tambahkan icon
                 'pro' => false,
             ];
