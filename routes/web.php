@@ -20,9 +20,10 @@ use App\Http\Controllers\CommunityUserController;
 use App\Models\Project;
 
 // dashboard pages
+// landing page
 Route::get('/', function () {
-    return view('pages.dashboard.ecommerce', ['title' => 'E-commerce Dashboard']);
-})->name('dashboard');
+    return view('pages.landing', ['title' => 'Landing Page']);
+})->name('landing');
 
 // calender pages
 Route::get('/calendar', function () {
@@ -231,9 +232,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // --- Dashboard ---
-    Route::get('/', function () {
-        return redirect()->route('dashboard');
-    });
+    // Route::get('/', function () {
+    //     return redirect()->route('dashboard');
+    // });
  Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
