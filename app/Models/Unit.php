@@ -33,4 +33,28 @@ public function users()
                 ->withPivot('role_id')
                 ->withTimestamps();
 }
+
+public function activities()
+{
+    return $this->hasMany(Activity::class, 'unit_id');
 }
+
+
+public function indexGeneral()
+{
+    // Ambil unit pertama tempat user terdaftar
+    $unitUser = UnitUser::where('user_id', Auth::id())->first();
+    
+    if (!$unitUser) {
+        return redirect()->route('dashboard')->with('error', 'Anda belum terdaftar di unit manapun.');
+    }
+
+    $unit_id = $unitUser->unit_id;
+    
+    // Panggil fungsi index yang sudah kita buat sebelumnya untuk mengambil data asli
+    return $this->index($unit_id); 
+}
+
+}
+
+

@@ -4,10 +4,10 @@ import ApexCharts from 'apexcharts';
 // baru
 import Sortable from 'sortablejs'
 
-// flatpickr
+// flatpickr // hiden
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-// FullCalendar
+// FullCalendar      /// dihiden
 import { Calendar } from '@fullcalendar/core';
 
 
@@ -15,7 +15,7 @@ import { Calendar } from '@fullcalendar/core';
 window.Alpine = Alpine;
 window.ApexCharts = ApexCharts;
 window.flatpickr = flatpickr;
-window.FullCalendar = Calendar;
+// window.FullCalendar = Calendar;     /// dihiden 
 
 // baru
 window.Sortable = Sortable
@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
         import('./components/chart/chart-13').then(module => module.initChartThirteen());
     }
 
-    // Calendar init
-    if (document.querySelector('#calendar')) {
-        import('./components/calendar-init').then(module => module.calendarInit());
-    }
+    // // Calendar init
+    // if (document.querySelector('#calendar')) {
+    //     import('./components/calendar-init').then(module => module.calendarInit());
+    // }
 });

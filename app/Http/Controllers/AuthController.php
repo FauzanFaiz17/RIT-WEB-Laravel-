@@ -40,16 +40,19 @@ class AuthController extends Controller
     }
     public function register(Request $request)
     {
-        // 1. Validasi Input (Wajib diisi semua untuk identitas awal)
+        // 1. Validasi Input 
         $validated = $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|email|max:255|unique:users,email',
-            'npm'       => 'required|string|max:20|unique:users,npm', // Pastikan NPM unik juga
-            'no_hp'     => 'required|string|max:15',
+            'npm'       => 'required|numeric|unique:users,npm',
+            'no_hp'     => 'required|numeric|digits_between:10,15',
             'password'  => 'required|string|min:8|confirmed',
         ], [
-            // Custom pesan error (opsional, biar lebih ramah)
+            // pesan error 
             'npm.unique' => 'NPM ini sudah terdaftar.',
+            'npm.numeric' => 'NPM harus berupa angka.',
+            'no_hp.numeric' => 'Nomor HP harus berupa angka.',
+            'no_hp.digits_between' => 'Nomor HP harus antara 10 hingga 15 digit.',
             'email.unique' => 'Email ini sudah terdaftar.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);

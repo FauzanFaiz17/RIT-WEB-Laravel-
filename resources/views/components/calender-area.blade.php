@@ -1,159 +1,506 @@
-
+@props(['events', 'unit', 'isKetua'])
 <div>
     <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-        <div class="custom-calendar">
+        <div class="custom-calendar p-4">
             <div id="calendar" class="min-h-screen"></div>
         </div>
     </div>
 
-    <!-- Modal -->
     <div class="fixed inset-0 items-center justify-center hidden p-5 overflow-y-auto modal z-99999" id="eventModal">
-        <div class="modal-close-btn fixed inset-0 h-full w-full bg-gray-400/50 backdrop-blur-[32px]"></div>
-        <div class="modal-dialog relative flex w-full max-w-[700px] flex-col overflow-y-auto rounded-3xl bg-white p-6 lg:p-11 dark:bg-gray-900">
+        <div class="modal-close-btn fixed inset-0 h-full w-full bg-gray-400/50 backdrop-blur-sm" onclick="closeModal()">
+        </div>
+        <div
+            class="modal-dialog relative z-50 flex w-full max-w-[700px] flex-col overflow-y-auto rounded-3xl bg-white p-6 lg:p-11 dark:bg-gray-900 shadow-2xl">
 
-            <!-- Close Button -->
-            <button class="modal-close-btn transition-color absolute top-5 right-5 z-999 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600 sm:h-11 sm:w-11 dark:bg-white/[0.05] dark:text-gray-400 dark:hover:bg-white/[0.07] dark:hover:text-gray-300">
-                <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.04289 16.5418C5.65237 16.9323 5.65237 17.5655 6.04289 17.956C6.43342 18.3465 7.06658 18.3465 7.45711 17.956L11.9987 13.4144L16.5408 17.9565C16.9313 18.347 17.5645 18.347 17.955 17.9565C18.3455 17.566 18.3455 16.9328 17.955 16.5423L13.4129 12.0002L17.955 7.45808C18.3455 7.06756 18.3455 6.43439 17.955 6.04387C17.5645 5.65335 16.9313 5.65335 16.5408 6.04387L11.9987 10.586L7.45711 6.04439C7.06658 5.65386 6.43342 5.65386 6.04289 6.04439C5.65237 6.43491 5.65237 7.06808 6.04289 7.4586L10.5845 12.0002L6.04289 16.5418Z" fill="" />
-                </svg>
-            </button>
+            <form id="activityForm" method="POST">
+                @csrf
 
-            <div class="flex flex-col px-2 overflow-y-auto modal-content custom-scrollbar">
+                <input type="hidden" id="in-id" name="id">
+                <input type="hidden" name="_method" id="formMethod" value="POST">
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="mb-2 font-semibold text-gray-800 modal-title text-theme-xl lg:text-2xl dark:text-white/90" id="eventModalLabel">
-                        Add Event
-                    </h5>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Plan your next big moment: schedule or edit an event to stay on track
-                    </p>
-                </div>
+                <button type="button" onclick="closeModal()"
+                    class="absolute top-5 right-5 z-999 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 dark:bg-white/[0.05]">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                </button>
 
-                <!-- Modal Body -->
-                <div class="mt-8 modal-body">
-
-                    <!-- Event Title -->
-                    <div>
-                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                            Event Title
-                        </label>
-                        <input id="event-title" type="text" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" placeholder="Enter event title" />
+                <div class="flex flex-col px-2">
+                    <div class="modal-header mb-8">
+                        <h5 class="font-semibold text-gray-800 text-2xl dark:text-white/90" id="modalTitle">Add Activity
+                        </h5>
+                        <p class="text-sm text-gray-500">Rencanakan agenda kegiatan atau acara divisi Anda.</p>
                     </div>
 
-                    <!-- Event Color -->
-                    <div class="mt-6">
-                        <label class="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">
-                            Event Color
-                        </label>
-                        <div class="flex flex-wrap items-center gap-4 sm:gap-5">
-
-                            <!-- Danger -->
-                            <div class="n-chk">
-                                <div class="form-check form-check-danger form-check-inline">
-                                    <label class="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400" for="modalDanger">
-                                        <span class="relative">
-                                            <input class="sr-only form-check-input" type="radio" name="event-level" value="Danger" id="modalDanger" />
-                                            <span class="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
-                                            </span>
-                                        </span>
-                                        Danger
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Success -->
-                            <div class="n-chk">
-                                <div class="form-check form-check-success form-check-inline">
-                                    <label class="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400" for="modalSuccess">
-                                        <span class="relative">
-                                            <input class="sr-only form-check-input" type="radio" name="event-level" value="Success" id="modalSuccess" />
-                                            <span class="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
-                                            </span>
-                                        </span>
-                                        Success
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Primary -->
-                            <div class="n-chk">
-                                <div class="form-check form-check-primary form-check-inline">
-                                    <label class="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400" for="modalPrimary">
-                                        <span class="relative">
-                                            <input class="sr-only form-check-input" type="radio" name="event-level" value="Primary" id="modalPrimary" />
-                                            <span class="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
-                                            </span>
-                                        </span>
-                                        Primary
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Warning -->
-                            <div class="n-chk">
-                                <div class="form-check form-check-warning form-check-inline">
-                                    <label class="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400" for="modalWarning">
-                                        <span class="relative">
-                                            <input class="sr-only form-check-input" type="radio" name="event-level" value="Warning" id="modalWarning" />
-                                            <span class="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
-                                            </span>
-                                        </span>
-                                        Warning
-                                    </label>
-                                </div>
-                            </div>
-
+                    <div class="space-y-6">
+                        <div>
+                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">Judul
+                                Aktivitas</label>
+                            <input id="in-title" name="title" type="text" required
+                                class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm dark:border-gray-700 dark:text-white"
+                                placeholder="Masukkan judul..." />
                         </div>
-                    </div>
+                        <div>
+    <label class="mb-1.5 block text-sm font-medium">Status</label>
+    <select id="in-status" name="status"
+        class="w-full rounded-lg border px-4 py-2.5">
+        <option value="pending">Pending</option>
+        <option value="progress">Progress</option>
+        <option value="completed">Completed</option>
+    </select>
+</div>
 
-                    <!-- Start Date -->
-                    <div class="mt-6">
-                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                            Enter Start Date
-                        </label>
-                        <div class="relative">
-                            <input id="event-start-date" type="date" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" onclick="this.showPicker()" />
-                            <span class="absolute top-1/2 right-3.5 -translate-y-1/2 pointer-events-none">
-                                <svg class="fill-gray-700 dark:fill-gray-400" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.33317 0.0830078C4.74738 0.0830078 5.08317 0.418794 5.08317 0.833008V1.24967H8.9165V0.833008C8.9165 0.418794 9.25229 0.0830078 9.6665 0.0830078C10.0807 0.0830078 10.4165 0.418794 10.4165 0.833008V1.24967L11.3332 1.24967C12.2997 1.24967 13.0832 2.03318 13.0832 2.99967V4.99967V11.6663C13.0832 12.6328 12.2997 13.4163 11.3332 13.4163H2.6665C1.70001 13.4163 0.916504 12.6328 0.916504 11.6663V4.99967V2.99967C0.916504 2.03318 1.70001 1.24967 2.6665 1.24967L3.58317 1.24967V0.833008C3.58317 0.418794 3.91896 0.0830078 4.33317 0.0830078ZM4.33317 2.74967H2.6665C2.52843 2.74967 2.4165 2.8616 2.4165 2.99967V4.24967H11.5832V2.99967C11.5832 2.8616 11.4712 2.74967 11.3332 2.74967H9.6665H4.33317ZM11.5832 5.74967H2.4165V11.6663C2.4165 11.8044 2.52843 11.9163 2.6665 11.9163H11.3332C11.4712 11.9163 11.5832 11.8044 11.5832 11.6663V5.74967Z" fill="" />
-                                </svg>
-                            </span>
+
+                        <div>
+                            <label class="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">Jenis
+                                Aktivitas</label>
+                            <div class="flex items-center gap-6">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="type" value="kegiatan" id="type-kegiatan" checked
+                                        class="w-4 h-4 text-[#3C50E0]">
+                                    <span class="text-sm text-gray-700 dark:text-gray-400">Kegiatan (Biru)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="type" value="acara" id="type-acara"
+                                        class="w-4 h-4 text-[#FFA70B]">
+                                    <span class="text-sm text-gray-700 dark:text-gray-400">Acara (Orange)</span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- End Date -->
-                    <div class="mt-6">
-                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                            Enter End Date
-                        </label>
-                        <div class="relative">
-                            <input id="event-end-date" type="date" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" onclick="this.showPicker()" />
-                            <span class="absolute top-1/2 right-3.5 -translate-y-1/2 pointer-events-none">
-                                <svg class="fill-gray-700 dark:fill-gray-400" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.33317 0.0830078C4.74738 0.0830078 5.08317 0.418794 5.08317 0.833008V1.24967H8.9165V0.833008C8.9165 0.418794 9.25229 0.0830078 9.6665 0.0830078C10.0807 0.0830078 10.4165 0.418794 10.4165 0.833008V1.24967L11.3332 1.24967C12.2997 1.24967 13.0832 2.03318 13.0832 2.99967V4.99967V11.6663C13.0832 12.6328 12.2997 13.4163 11.3332 13.4163H2.6665C1.70001 13.4163 0.916504 12.6328 0.916504 11.6663V4.99967V2.99967C0.916504 2.03318 1.70001 1.24967 2.6665 1.24967L3.58317 1.24967V0.833008C3.58317 0.418794 3.91896 0.0830078 4.33317 0.0830078ZM4.33317 2.74967H2.6665C2.52843 2.74967 2.4165 2.8616 2.4165 2.99967V4.24967H11.5832V2.99967C11.5832 2.8616 11.4712 2.74967 11.3332 2.74967H9.6665H4.33317ZM11.5832 5.74967H2.4165V11.6663C2.4165 11.8044 2.52843 11.9163 2.6665 11.9163H11.3332C11.4712 11.9163 11.5832 11.8044 11.5832 11.6663V5.74967Z" fill="" />
-                                </svg>
-                            </span>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">Waktu
+                                    Mulai</label>
+                                <input id="in-start" name="start_date" type="datetime-local" required
+                                    class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm dark:border-gray-700 dark:text-white" />
+                            </div>
+                            <div>
+                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">Waktu
+                                    Selesai</label>
+                                <input id="in-end" name="end_date" type="datetime-local"
+                                    class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm dark:border-gray-700 dark:text-white" />
+                            </div>
                         </div>
+
+                        <div>
+                            <label
+                                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">Lokasi</label>
+                            <input id="in-location" name="location" type="text"
+                                class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm dark:border-gray-700 dark:text-white"
+                                placeholder="Ruang Rapat / Zoom" />
+                        </div>
+                        <div>
+                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                Deskripsi
+                            </label>
+                            <textarea id="in-description" name="description" rows="3"
+                                class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm dark:border-gray-700 dark:text-white"
+                                placeholder="Masukkan deskripsi kegiatan..."></textarea>
+                        </div>
+
                     </div>
 
+                    <div class="flex items-center gap-3 mt-10 justify-end">
+                        <button type="button" onclick="closeModal()"
+                            class="rounded-lg border border-gray-300 px-6 py-2.5 text-sm font-medium dark:text-gray-400">Close</button>
+                        <button type="button" id="btnDelete" onclick="submitDelete()"
+                            class="hidden rounded-lg bg-red-500 px-6 py-2.5 text-sm font-medium text-white hover:bg-opacity-90">Delete</button>
+                        <button type="submit" id="btnSubmit"
+                            class="rounded-lg bg-[#3C50E0] px-6 py-2.5 text-sm font-medium text-white hover:bg-opacity-90">Save
+                            Activity</button>
+                    </div>
                 </div>
-
-                <!-- Modal Footer -->
-                <div class="flex items-center gap-3 mt-6 modal-footer sm:justify-end">
-                    <button type="button" class="modal-close-btn flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 sm:w-auto dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-update-event bg-brand-500 hover:bg-brand-600 flex w-full justify-center rounded-lg px-4 py-2.5 text-sm font-medium text-white sm:w-auto" style="display: none;" data-fc-event-public-id="">
-                        Update Changes
-                    </button>
-                    <button type="button" class="btn btn-add-event bg-brand-500 hover:bg-brand-600 flex w-full justify-center rounded-lg px-4 py-2.5 text-sm font-medium text-white sm:w-auto">
-                        Add Event
-                    </button>
-                </div>
-
-            </div>
+            </form>
         </div>
     </div>
 </div>
 
+{{-- <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script>
+    // 1. Definisikan fungsi modal secara GLOBAL agar bisa diakses atribut onclick template
+    window.openModal = function() {
+        const modal = document.getElementById('eventModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Kunci scroll saat modal buka
+        }
+    };
+
+        window.closeModal = function() {
+            const modal = document.getElementById('eventModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+
+            document.getElementById('btnDelete').classList.add('hidden');
+            document.getElementById('activityForm').reset();
+            document.getElementById('formMethod').value = "POST";
+        };
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 2. Pasang Event Listener ke semua tombol close bawaan template
+        const closeButtons = document.querySelectorAll('.modal-close-btn');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.closeModal();
+            });
+        });
+
+        // 3. Inisialisasi Kalender dengan ID 'calendar' sesuai HTML template Anda
+        const calendarEl = document.getElementById('calendar');
+
+        // Cek keamanan untuk mencegah eror 'null'
+        if (!calendarEl) return;
+
+
+
+
+        // Gunakan FullCalendar (Huruf Kapital) sesuai standar CDN v6
+        if (typeof FullCalendar !== 'undefined') {
+
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+
+                selectable: true,
+                selectMirror: true,
+                unselectAuto: false,
+                editable: true,
+
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                },
+
+                events: @json($events ?? []),
+                eventDrop: function(info) {
+                    autoSaveEvent(info);
+                },
+
+                eventResize: function(info) {
+                    autoSaveEvent(info);
+                },
+
+
+                select: function(info) {
+                @php if($isKetua ?? false): @endphp
+                    const form = document.getElementById('activityForm');
+                    form.reset();
+
+                    // MODE CREATE
+                    form.action = "{{ route('activities.store', $unit->id) }}";
+                    document.getElementById('formMethod').value = "POST";
+
+                    document.getElementById('btnDelete').classList.add('hidden');
+
+                    function format(d) {
+                        const pad = n => n.toString().padStart(2, '0');
+                        return d.getFullYear() + '-' +
+                            pad(d.getMonth() + 1) + '-' +
+                            pad(d.getDate()) + 'T' +
+                            pad(d.getHours()) + ':' +
+                            pad(d.getMinutes());
+                    }
+
+                    const now = new Date();
+
+                    const start = new Date(info.start);
+                    start.setHours(now.getHours(), now.getMinutes());
+
+                    const end = new Date(info.end || info.start);
+                    end.setHours(now.getHours() + 1, now.getMinutes());
+
+                    document.getElementById('in-id').value = '';
+                    document.getElementById('in-start').value = format(start);
+                    document.getElementById('in-end').value = format(end);
+
+                    openModal();
+                @php endif; @endphp
+                },
+
+
+               eventClick: function(info) {
+            @php if($isKetua ?? false): @endphp
+                const e = info.event;
+                const form = document.getElementById('activityForm');
+
+                // MODE EDIT
+                form.action = `/activities/${e.id}`;
+                document.getElementById('formMethod').value = "PUT";
+                document.getElementById('in-status').value = e.extendedProps.status ?? 'pending';
+
+                document.getElementById('btnDelete').classList.remove('hidden');
+
+                function format(d) {
+                    const pad = n => n.toString().padStart(2, '0');
+                    return d.getFullYear() + '-' +
+                        pad(d.getMonth() + 1) + '-' +
+                        pad(d.getDate()) + 'T' +
+                        pad(d.getHours()) + ':' +
+                        pad(d.getMinutes());
+                }
+                
+                document.getElementById('in-id').value = e.id;
+                document.getElementById('in-title').value = e.title;
+                document.getElementById('in-start').value = format(e.start);
+                document.getElementById('in-end').value = e.end ? format(e.end) : '';
+
+                // EXTRA
+                if (e.extendedProps) {
+                    document.getElementById('in-location').value = e.extendedProps.location || '';
+                    document.getElementById('in-description').value = e.extendedProps.description || '';
+                    if (e.extendedProps.type === 'acara') {
+                        document.getElementById('type-acara').checked = true;
+                    } else {
+                        document.getElementById('type-kegiatan').checked = true;
+                    }
+                }
+
+                openModal();
+            @php endif; @endphp
+            },
+
+                        });
+
+
+                        calendar.render();
+                    } else {
+                        console.error("Library FullCalendar gagal dimuat. Periksa koneksi internet.");
+                    }
+                });
+
+                function submitDelete() {
+                    const id = document.getElementById('in-id').value;
+
+                    if (!id) return;
+
+                    if (!confirm('Yakin ingin menghapus kegiatan ini?')) return;
+
+                    fetch(`/activities/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    }).then(res => {
+                        if (res.ok) {
+                            location.reload();
+                        } else {
+                            alert('Gagal menghapus');
+                        }
+                    });
+
+
+
+                    
+                }
+</script>
+<script>
+document.getElementById('activityForm').addEventListener('submit', function () {
+    const type = document.querySelector('input[name="type"]:checked').value;
+
+    const btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+    btn.innerText = 'Saving...';
+});
+</script>
+ --}}
+
+ <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+
+<script>
+window.openModal = function() {
+    const modal = document.getElementById('eventModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+};
+
+window.closeModal = function() {
+    const modal = document.getElementById('eventModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+
+    document.getElementById('btnDelete').classList.add('hidden');
+    document.getElementById('activityForm').reset();
+    document.getElementById('formMethod').value = "POST";
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    if (!calendarEl) return;
+
+    if (typeof FullCalendar !== 'undefined') {
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            editable: true,
+
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,listWeek'
+            },
+
+            events: @json($events ?? []),
+
+            eventDrop: autoSaveEvent,
+            eventResize: autoSaveEvent,
+
+            select: function(info) {
+            @php if($isKetua ?? false): @endphp
+                const form = document.getElementById('activityForm');
+                form.reset();
+                form.action = "{{ route('activities.store', $unit->id) }}";
+                document.getElementById('formMethod').value = "POST";
+                document.getElementById('btnDelete').classList.add('hidden');
+
+                function format(d) {
+                    const pad = n => n.toString().padStart(2, '0');
+                    return d.getFullYear() + '-' +
+                        pad(d.getMonth() + 1) + '-' +
+                        pad(d.getDate()) + 'T' +
+                        pad(d.getHours()) + ':' +
+                        pad(d.getMinutes());
+                }
+
+                document.getElementById('in-id').value = '';
+                document.getElementById('in-start').value = format(info.start);
+                document.getElementById('in-end').value = format(info.end || info.start);
+
+                openModal();
+            @php endif; @endphp
+            },
+
+            eventClick: function(info) {
+            @php if($isKetua ?? false): @endphp
+                const e = info.event;
+                const form = document.getElementById('activityForm');
+
+                form.action = `/activities/${e.id}`;
+                document.getElementById('formMethod').value = "PUT";
+                document.getElementById('btnDelete').classList.remove('hidden');
+
+                function format(d) {
+                    const pad = n => n.toString().padStart(2, '0');
+                    return d.getFullYear() + '-' +
+                        pad(d.getMonth() + 1) + '-' +
+                        pad(d.getDate()) + 'T' +
+                        pad(d.getHours()) + ':' +
+                        pad(d.getMinutes());
+                }
+
+                document.getElementById('in-id').value = e.id;
+                document.getElementById('in-title').value = e.title;
+                document.getElementById('in-start').value = format(e.start);
+                document.getElementById('in-end').value = e.end ? format(e.end) : '';
+
+                if (e.extendedProps) {
+                    document.getElementById('in-location').value = e.extendedProps.location || '';
+                    document.getElementById('in-description').value = e.extendedProps.description || '';
+                    document.getElementById('in-status').value = e.extendedProps.status || 'pending';
+
+                    if (e.extendedProps.type === 'acara') {
+                        document.getElementById('type-acara').checked = true;
+                    } else {
+                        document.getElementById('type-kegiatan').checked = true;
+                    }
+                }
+
+                openModal();
+            @php endif; @endphp
+            },
+        });
+
+        calendar.render();
+    }
+});
+
+
+// ================= AUTO SAVE DRAG =================
+
+function autoSaveEvent(info) {
+    const event = info.event;
+
+    function formatDate(date) {
+        const pad = n => n.toString().padStart(2, '0');
+        return date.getFullYear() + '-' +
+               pad(date.getMonth() + 1) + '-' +
+               pad(date.getDate());
+    }
+
+    let start = formatDate(event.start);
+    let end   = event.end ? formatDate(event.end) : null;
+
+    fetch(`/activities/${event.id}/drag`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content'),
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            start_date: start,
+            end_date: end
+        })
+    })
+    .then(async res => {
+        if (!res.ok) {
+            throw await res.text();
+        }
+        return res.json();
+    })
+    .then(res => {
+        if (!res.status) {
+            alert('Gagal menyimpan perubahan');
+            info.revert();
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Gagal menyimpan perubahan');
+        info.revert();
+    });
+}
+
+// ================= DELETE =================
+
+function submitDelete() {
+    const id = document.getElementById('in-id').value;
+    if (!id) return;
+
+    if (!confirm('Yakin ingin menghapus kegiatan ini?')) return;
+
+    fetch(`/activities/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json'
+        }
+    }).then(res => {
+        if (res.ok) {
+            location.reload();
+        } else {
+            alert('Gagal menghapus');
+        }
+    });
+}
+
+document.getElementById('activityForm').addEventListener('submit', function () {
+    const btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+    btn.innerText = 'Saving...';
+});
+</script>
