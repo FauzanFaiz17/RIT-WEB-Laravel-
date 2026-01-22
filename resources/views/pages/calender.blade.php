@@ -2,5 +2,8 @@
 
 @section('content')
     <x-common.page-breadcrumb pageTitle="Calender" />
-    <x-calender-area />
+    
+    {{-- TAMBAHKAN ATRIBUT DI BAWAH INI --}}
+    <x-calender-area :events="$events" :unit="$unit" :isKetua="$isKetua" />
 @endsection
+

@@ -25,26 +25,49 @@ class MenuHelper
                         'path' => route('community.divisions', 'Komunitas Game', false),
                         'pro' => false
                     ],
-                    ['name' => 'Komunitas IT', 
-                    'icon' => 'it-icon',
-                    'path' => route('community.divisions', 'Komunitas IT',false),
-                    'pro' => false]
+                    [
+                        'name' => 'Komunitas IT',
+                        'icon' => 'it-icon',
+                        'path' => route('community.divisions', 'Komunitas IT', false),
+                        'pro' => false
+                    ]
                 ],
-            
+
 
             ],
-          
+
+
+            [
+                'name' => 'Aktivitas',
+                'icon' => 'forms',
+                'subItems' => [
+                    [
+                        'name' => 'Kegiatan',
+                        'icon' => 'schedule-icon',
+                        // PERBAIKAN: Bungkus dengan route() agar menjadi URL lengkap
+                        'path' => route('kegiatan.index'),
+                        'pro' => false
+                    ],
+                    [
+                        'name' => 'Acara',
+                        'icon' => 'event-icon',
+                        // PERBAIKAN: Bungkus dengan route()
+                        'path' => route('acara.index'),
+                        'pro' => false
+                    ]
+                ],
+            ],
+            [
+                'icon' => 'calendar',
+                'name' => 'Kalender Kegiatan',
+                'path' => route('calendar.index'),
+            ],
 
             // [
-            //     'icon' => 'calendar',
-            //     'name' => 'Calendar',
-            //     'path' => '/calendar',
+            //     'icon' => 'user-profile',
+            //     'name' => 'User Profile',
+            //     'path' => '/profile',
             // ],
-            [
-                'icon' => 'user-profile',
-                'name' => 'User Profile',
-                'path' => '/profile',
-            ],
             // [
             //     'name' => 'Forms',
             //     'icon' => 'forms',
@@ -112,7 +135,7 @@ class MenuHelper
                 'items' => self::getMainNavItems()
             ],
 
-            // Bagian Ini adalah bagian menu di side bar yang di non aktifkan
+            //Bagian Ini adalah bagian menu di side bar yang di non aktifkan
             [
                 'title' => 'Others',
                 'items' => self::getOthersItems()

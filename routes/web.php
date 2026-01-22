@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommunityUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ActivityController;
 
 
 // dashboard pages
@@ -12,10 +13,7 @@ Route::get('/', function () {
     return view('pages.dashboard.ecommerce', ['title' => 'E-commerce Dashboard']);
 })->name('dashboard');
 
-// calender pages
-Route::get('/calendar', function () {
-    return view('pages.calender', ['title' => 'Calendar']);
-})->name('calendar');
+
 
 // profile pages
 Route::get('/profile', function () {
@@ -103,7 +101,7 @@ Route::middleware('guest')->group(function () {
 
 // 2. ROUTE USER - Wajib Login
 Route::middleware('auth')->group(function () {
-    
+
     // --- Logout ---
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -111,11 +109,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return redirect()->route('dashboard');
     });
- Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->middleware(['auth', 'verified'])
+        ->name('dashboard');
 
-    
+
     // --- Fitur Profile ---
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -131,7 +129,7 @@ Route::middleware('auth')->group(function () {
         ->name('member.list');
 
     // 3. CRUD Anggota (Manual Route)
-    
+
     // Form Tambah Anggota
     Route::get('/community-user/create', [CommunityUserController::class, 'create'])
         ->name('community_user.create');
@@ -156,4 +154,28 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Route lainnya...
     Route::put('/profile/photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.photo.update');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    // 1. Route Utama Sidebar (Mengarahkan user ke kalender unitnya sendiri secara otomatis)
+    Route::get('/calendar', [ActivityController::class, 'indexGeneral'])->name('calendar.index');
+
+    // 2. Route untuk Memilih Unit (Halaman all_units yang kita buat tadi)
+    Route::get('/activities/all', [ActivityController::class, 'allActivities'])->name('activities.all');
+
+    // 3. Route Kalender Berdasarkan ID Unit (Dinamis)
+    Route::get('/unit/{unit_id}/activities', [ActivityController::class, 'index'])->name('activities.index');
+
+    // 4. Proses Simpan, Update, dan Hapus
+    Route::post('/unit/{unit_id}/activities', [ActivityController::class, 'store'])->name('activities.store');
+    Route::put('/activities/{id}', [ActivityController::class, 'update'])->name('activities.update');
+    Route::delete('/activities/{id}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+    
+    Route::get('/kegiatan', [ActivityController::class, 'indexKegiatan'])->name('kegiatan.index');
+    Route::get('/acara', [ActivityController::class, 'indexAcara'])->name('acara.index');
+
+    Route::put('/activities/{id}/drag', [ActivityController::class, 'dragUpdate'])->name('activities.drag');
+
+    
 });
