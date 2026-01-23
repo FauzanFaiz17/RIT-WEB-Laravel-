@@ -8,9 +8,9 @@ class UnitUser extends Pivot
 {
     // Nama tabel di database
     protected $table = 'unit_user';
-    
+
     // Aktifkan incrementing karena tabel pivot kita punya kolom 'id' utama
-    public $incrementing = true; 
+    public $incrementing = true;
 
     // Relasi ke User (Agar bisa panggil $data->user->name)
     public function user()

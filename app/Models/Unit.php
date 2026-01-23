@@ -12,14 +12,12 @@ class Unit extends Model
     protected $guarded = ['id'];
 
     // 1. Relasi ke Parent (Mencari Induknya)
-    // Contoh: $webDev->parent akan mengembalikan object 'Komunitas IT'
     public function parent()
     {
         return $this->belongsTo(Unit::class, 'parent_id');
     }
 
     // 2. Relasi ke Children (Mencari Anak/Divisinya)
-    // Contoh: $komunitasIT->children akan mengembalikan collection ['WebDev', 'Data Science']
     public function children()
     {
         return $this->hasMany(Unit::class, 'parent_id');

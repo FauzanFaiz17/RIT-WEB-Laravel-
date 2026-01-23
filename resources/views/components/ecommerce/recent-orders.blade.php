@@ -1,137 +1,87 @@
-@props(['products' => []])
+{{-- resources/views/components/ecommerce/upcoming-activities.blade.php --}}
+@props(['upcomingActivities'])
 
-@php
-    $defaultProducts = [
-        [
-            'name' => 'Macbook pro 13"',
-            'variants' => 2,
-            'image' => '/images/product/product-01.jpg',
-            'category' => 'Laptop',
-            'price' => '$2399.00',
-            'status' => 'Delivered',
-        ],
-        [
-            'name' => 'Apple Watch Ultra',
-            'variants' => 1,
-            'image' => '/images/product/product-02.jpg',
-            'category' => 'Watch',
-            'price' => '$879.00',
-            'status' => 'Pending',
-        ],
-        [
-            'name' => 'iPhone 15 Pro Max',
-            'variants' => 2,
-            'image' => '/images/product/product-03.jpg',
-            'category' => 'SmartPhone',
-            'price' => '$1869.00',
-            'status' => 'Delivered',
-        ],
-        [
-            'name' => 'iPad Pro 3rd Gen',
-            'variants' => 2,
-            'image' => '/images/product/product-04.jpg',
-            'category' => 'Electronics',
-            'price' => '$1699.00',
-            'status' => 'Canceled',
-        ],
-        [
-            'name' => 'Airpods Pro 2nd Gen',
-            'variants' => 1,
-            'image' => '/images/product/product-05.jpg',
-            'category' => 'Accessories',
-            'price' => '$240.00',
-            'status' => 'Delivered',
-        ],
-    ];
-    
-    $productsList = !empty($products) ? $products : $defaultProducts;
-    
-    // Helper function for status classes
-    $getStatusClasses = function($status) {
-        $baseClasses = 'rounded-full px-2 py-0.5 text-theme-xs font-medium';
-        
-        return match($status) {
-            'Delivered' => $baseClasses . ' bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500',
-            'Pending' => $baseClasses . ' bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400',
-            'Canceled' => $baseClasses . ' bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500',
-            default => $baseClasses . ' bg-gray-50 text-gray-600 dark:bg-gray-500/15 dark:text-gray-400',
-        };
-    };
-@endphp
-
-<div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-    <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
+<div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-8 2xl:p-10 h-full flex flex-col shadow-sm">
+    <div class="flex items-center justify-between mb-8">
         <div>
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Recent Orders</h3>
+            <h3 class="text-lg md:text-xl font-bold text-gray-800 dark:text-white/90">Agenda Organisasi</h3>
+            <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">Kegiatan mendatang & sedang berlangsung</p>
         </div>
-
-        <div class="flex items-center gap-3">
-            <button class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-                <svg class="stroke-current fill-white dark:fill-gray-800" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.29004 5.90393H17.7067" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M17.7075 14.0961H2.29085" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M12.0826 3.33331C13.5024 3.33331 14.6534 4.48431 14.6534 5.90414C14.6534 7.32398 13.5024 8.47498 12.0826 8.47498C10.6627 8.47498 9.51172 7.32398 9.51172 5.90415C9.51172 4.48432 10.6627 3.33331 12.0826 3.33331Z" fill="" stroke="" stroke-width="1.5" />
-                    <path d="M7.91745 11.525C6.49762 11.525 5.34662 12.676 5.34662 14.0959C5.34661 15.5157 6.49762 16.6667 7.91745 16.6667C9.33728 16.6667 10.4883 15.5157 10.4883 14.0959C10.4883 12.676 9.33728 11.525 7.91745 11.525Z" fill="" stroke="" stroke-width="1.5" />
-                </svg>
-                Filter
-            </button>
-
-            <button class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-                See all
-            </button>
-        </div>
+        <a href="/calendar" class="text-sm font-semibold text-[#3C50E0] hover:underline">Lihat Semua</a>
     </div>
 
-    <div class="max-w-full overflow-x-auto custom-scrollbar">
-        <table class="min-w-full">
-            <thead>
-                <tr class="border-t border-gray-100 dark:border-gray-800">
-                    <th class="py-3 text-left">
-                        <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Products</p>
-                    </th>
-                    <th class="py-3 text-left">
-                        <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Category</p>
-                    </th>
-                    <th class="py-3 text-left">
-                        <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Price</p>
-                    </th>
-                    <th class="py-3 text-left">
-                        <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Status</p>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($productsList as $product)
-                    <tr class="border-t border-gray-100 dark:border-gray-800">
-                        <td class="py-3 whitespace-nowrap">
-                            <div class="flex items-center gap-3">
-                                <div class="h-[50px] w-[50px] overflow-hidden rounded-md">
-                                    <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" />
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                        {{ $product['name'] }}
-                                    </p>
-                                    <span class="text-gray-500 text-theme-xs dark:text-gray-400">
-                                        {{ $product['variants'] }} Variants
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-3 whitespace-nowrap">
-                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ $product['category'] }}</p>
-                        </td>
-                        <td class="py-3 whitespace-nowrap">
-                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ $product['price'] }}</p>
-                        </td>
-                        <td class="py-3 whitespace-nowrap">
-                            <span class="{{ $getStatusClasses($product['status']) }}">
-                                {{ $product['status'] }}
-                            </span>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <div class="space-y-7 flex-1">
+        @forelse($upcomingActivities as $activity)
+            @php
+                $startDate = \Carbon\Carbon::parse($activity->start_date);
+                $isToday = $startDate->isToday();
+                $isOngoing = $startDate->isPast() && $isToday; // Logika sederhana sedang berlangsung hari ini
+                
+                $daysRemaining = intval(now()->startOfDay()->diffInDays($startDate->startOfDay(), false));
+                $daysRemaining = max(0, $daysRemaining);
+
+                $isAcara = strtolower($activity->type ?? '') === 'acara';
+                
+                // PENENTUAN STATUS & WARNA BAR
+                if ($isToday) {
+                    $textStatus = 'Sedang Berlangsung';
+                    $colorClass = 'bg-success-500'; // Hijau untuk yang sedang jalan
+                    $badgeBase = 'bg-success-50 text-success-700 border-success-200 dark:bg-success-500/10 dark:text-success-500';
+                } elseif ($daysRemaining <= 2) {
+                    $textStatus = 'Sangat Dekat';
+                    $colorClass = 'bg-red-500';
+                    $badgeBase = $isAcara ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-blue-50 text-blue-700 border-blue-200';
+                } else {
+                    $textStatus = 'Mendatang';
+                    $colorClass = $isAcara ? 'bg-amber-500' : 'bg-[#3C50E0]';
+                    $badgeBase = $isAcara ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-blue-50 text-blue-700 border-blue-200';
+                }
+            @endphp
+
+            <div class="flex items-center w-full group gap-4">
+                {{-- AREA 1: INFO (KIRI) --}}
+                <div class="flex items-center gap-4 w-1/3 min-w-0">
+                    <div class="flex h-12 w-12 md:h-14 md:w-14 flex-shrink-0 items-center justify-center rounded-2xl {{ $isToday ? 'bg-success-50 dark:bg-success-900/20 text-success-600' : ($isAcara ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600' : 'bg-blue-50 dark:bg-blue-900/20 text-blue-600') }} transition-all duration-300">
+                        <svg class="size-6 md:size-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    
+                    <div class="min-w-0 flex flex-col">
+                        <p class="text-sm md:text-base font-bold text-gray-800 dark:text-white/90 truncate">
+                            {{ $activity->title ?? 'Tanpa Nama' }}
+                        </p>
+                        <span class="block text-[10px] md:text-xs text-gray-400 mt-0.5">
+                            {{ $startDate->translatedFormat('d F Y') }}
+                        </span>
+                    </div>
+                </div>
+
+                {{-- AREA 2: BADGE TENGAH (Label Kategori & Status) --}}
+                <div class="w-1/3 flex flex-col items-center gap-1">
+                    <span class="px-2.5 py-0.5 rounded text-[9px] md:text-[10px] font-bold uppercase border {{ $isToday ? 'bg-success-50 text-success-700 border-success-200' : ($isAcara ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
+                        {{ $activity->type ?? 'Kegiatan' }}
+                    </span>
+                    <span class="text-[9px] font-bold {{ $isToday ? 'text-success-600' : ($daysRemaining <= 2 ? 'text-red-500' : 'text-gray-400') }}">
+                        {{ $textStatus }}
+                    </span>
+                </div>
+
+                {{-- AREA 3: PROGRES (KANAN) --}}
+                <div class="w-1/3 flex flex-col items-end gap-1.5">
+                    <span class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300">
+                        {{ $isToday ? 'Hari Ini' : $daysRemaining . ' Hari lagi' }}
+                    </span>
+                    <div class="h-1.5 w-full max-w-[100px] md:max-w-[120px] rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                        <div class="h-full {{ $colorClass }} transition-all duration-1000" 
+                             style="width: {{ $isToday ? '100' : max(15, 100 - ($daysRemaining * 10)) }}%"></div>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="flex flex-col items-center justify-center py-16 opacity-50">
+                <p class="text-sm font-medium text-gray-500">Tidak ada agenda saat ini.</p>
+            </div>
+        @endforelse
     </div>
 </div>
