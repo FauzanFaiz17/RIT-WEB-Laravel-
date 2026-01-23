@@ -16,7 +16,7 @@ class DashboardController extends Controller
       ->withCount(['children', 'users'])
       ->get();
 
-    $upcomingActivities = \App\Models\Activity::where('start_date', '>=', now()->startOfDay())
+    $upcomingActivities = Activity::where('start_date', '>=', now()->startOfDay())
       ->orderBy('start_date', 'asc')
       ->take(5)
       ->get();
@@ -27,10 +27,10 @@ class DashboardController extends Controller
     $totalActivity = Activity::count();
 
     // Menghitung Unit Utama (Komunitas)
-    $totalCommunities = \App\Models\Unit::whereNull('parent_id')->count();
+    $totalCommunities = Unit::whereNull('parent_id')->count();
 
     // Menghitung Sub-Unit (Divisi/Departemen)
-    $totalDivisions = \App\Models\Unit::whereNotNull('parent_id')->count();
+    $totalDivisions = Unit::whereNotNull('parent_id')->count();
 
 
     return view('pages.dashboard.ecommerce', compact(
