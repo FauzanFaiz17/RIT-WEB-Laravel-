@@ -1,8 +1,7 @@
-
 {{-- Notification Dropdown Component --}}
 <div class="relative" x-data="{
     dropdownOpen: false,
-    notifying: {{ auth()->user()->unreadNotifications->count() > 0 ? 'true' : 'false' }},
+    notifying: true,
     toggleDropdown() {
         this.dropdownOpen = !this.dropdownOpen;
         this.notifying = false;
@@ -91,44 +90,123 @@
         <!-- Notification List -->
         <ul class="flex flex-col h-auto overflow-y-auto custom-scrollbar">
             @php
-            $notifications = auth()->user()
-                ->unreadNotifications()
-                ->latest()
-                ->take(10)
-                ->get();
+                $notifications = [
+                    [
+                        'id' => 1,
+                        'userName' => 'Terry Franci',
+                        'userImage' => '/images/user/user-02.jpg',
+                        'action' => 'requests permission to change',
+                        'project' => 'Project - Nganter App',
+                        'type' => 'Project',
+                        'time' => '5 min ago',
+                        'status' => 'online',
+                    ],
+                    [
+                        'id' => 2,
+                        'userName' => 'Alex Johnson',
+                        'userImage' => '/images/user/user-03.jpg',
+                        'action' => 'requests permission to change',
+                        'project' => 'Project - Nganter App',
+                        'type' => 'Project',
+                        'time' => '10 min ago',
+                        'status' => 'offline',
+                    ],
+                    [
+                        'id' => 3,
+                        'userName' => 'Sarah Williams',
+                        'userImage' => '/images/user/user-04.jpg',
+                        'action' => 'requests permission to change',
+                        'project' => 'Project - Dashboard UI',
+                        'type' => 'Project',
+                        'time' => '15 min ago',
+                        'status' => 'online',
+                    ],
+                    [
+                        'id' => 4,
+                        'userName' => 'Mike Brown',
+                        'userImage' => '/images/user/user-05.jpg',
+                        'action' => 'requests permission to change',
+                        'project' => 'Project - E-commerce',
+                        'type' => 'Project',
+                        'time' => '20 min ago',
+                        'status' => 'online',
+                    ],
+                    [
+                        'id' => 5,
+                        'userName' => 'Emma Davis',
+                        'userImage' => '/images/user/user-06.jpg',
+                        'action' => 'requests permission to change',
+                        'project' => 'Project - Mobile App',
+                        'type' => 'Project',
+                        'time' => '25 min ago',
+                        'status' => 'offline',
+                    ],
+                    [
+                        'id' => 6,
+                        'userName' => 'John Smith',
+                        'userImage' => '/images/user/user-07.jpg',
+                        'action' => 'requests permission to change',
+                        'project' => 'Project - Landing Page',
+                        'type' => 'Project',
+                        'time' => '30 min ago',
+                        'status' => 'online',
+                    ],
+                    [
+                        'id' => 7,
+                        'userName' => 'Lisa Anderson',
+                        'userImage' => '/images/user/user-08.jpg',
+                        'action' => 'requests permission to change',
+                        'project' => 'Project - Blog System',
+                        'type' => 'Project',
+                        'time' => '35 min ago',
+                        'status' => 'online',
+                    ],
+                    [
+                        'id' => 8,
+                        'userName' => 'David Wilson',
+                        'userImage' => '/images/user/user-09.jpg',
+                        'action' => 'requests permission to change',
+                        'project' => 'Project - CRM Dashboard',
+                        'type' => 'Project',
+                        'time' => '40 min ago',
+                        'status' => 'online',
+                    ],
+                ];
             @endphp
 
-
-            @forelse ($notifications as $notification)
-            <li>
-                <a
-                    href="{{ route('notifications.read', $notification->id) }}"
-                    class="flex gap-3 rounded-lg border-b border-gray-100 p-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5"
-                    @click="handleItemClick()"
-                >
-                    <span class="block">
-                        <span class="mb-1 block text-theme-sm text-gray-500 dark:text-gray-400">
-                            <span class="font-medium text-gray-800 dark:text-white/90">
-                                {{ $notification->data['title'] }}
-                            </span>
-                            {{ $notification->data['message'] }}
-                            <span class="font-medium text-gray-800 dark:text-white/90">
-                                {{ $notification->data['task_title'] }}
-                            </span>
+            @foreach ($notifications as $notification)
+                <li @click="handleItemClick()">
+                    <a
+                        class="flex gap-3 rounded-lg border-b border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5"
+                        href="#"
+                    >
+                        <span class="relative block w-full h-10 rounded-full z-1 max-w-10">
+                            <img src="{{ $notification['userImage'] }}" alt="User" class="overflow-hidden rounded-full" />
+                            <span
+                                class="absolute bottom-0 right-0 z-10 h-2.5 w-full max-w-2.5 rounded-full border-[1.5px] border-white dark:border-gray-900 {{ $notification['status'] === 'online' ? 'bg-success-500' : 'bg-error-500' }}"
+                            ></span>
                         </span>
 
-                        <span class="text-theme-xs text-gray-400">
-                            {{ $notification->created_at->diffForHumans() }}
-                        </span>
-                    </span>
-                </a>
-            </li>
-            @empty
-            <li class="p-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                Tidak ada notifikasi baru
-            </li>
-            @endforelse
+                        <span class="block">
+                            <span class="mb-1.5 block text-theme-sm text-gray-500 dark:text-gray-400">
+                                <span class="font-medium text-gray-800 dark:text-white/90">
+                                    {{ $notification['userName'] }}
+                                </span>
+                                {{ $notification['action'] }}
+                                <span class="font-medium text-gray-800 dark:text-white/90">
+                                    {{ $notification['project'] }}
+                                </span>
+                            </span>
 
+                            <span class="flex items-center gap-2 text-gray-500 text-theme-xs dark:text-gray-400">
+                                <span>{{ $notification['type'] }}</span>
+                                <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+                                <span>{{ $notification['time'] }}</span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+            @endforeach
         </ul>
 
         <!-- View All Button -->

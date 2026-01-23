@@ -19,7 +19,12 @@
 
         <div class="col-span-12">
             <div class="grid grid-cols-12 gap-4 md:gap-6">
-            <x-ecommerce.statistics-chart />
+            <x-ecommerce.statistics-chart 
+                :totalPemasukan="$totalPemasukan"
+                :totalPengeluaran="$totalPengeluaran"
+                :saldo="$saldo"
+                :chartData="$chartData"
+            />
  
         </div>
 
