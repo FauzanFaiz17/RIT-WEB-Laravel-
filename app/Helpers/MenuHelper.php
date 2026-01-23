@@ -11,9 +11,7 @@ class MenuHelper
                 'icon' => 'dashboard',
                 'name' => 'Dashboard',
                 'path' => '/',
-                'subItems' => [
-                    ['name' => 'Ecommerce', 'path' => '/'],
-                ],
+           
             ],
             [
                 'name' => 'Manajemen User',

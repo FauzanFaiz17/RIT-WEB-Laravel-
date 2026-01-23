@@ -10,26 +10,26 @@ use Illuminate\Support\Facades\Auth;
 
 class ActivityController extends Controller
 {
-    /**
-     * FUNGSI BARU: Menangani akses dari Sidebar (tanpa ID di URL)
-     * Ini yang sebelumnya saya sebut indexGeneral
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | 1. NAVIGATION & MAIN VIEWS
+    |--------------------------------------------------------------------------
+    | Fungsi untuk mengatur tampilan utama kalender dan navigasi awal.
+    */
+
+    // Menangani akses dari Sidebar (tanpa ID di URL)
     public function indexGeneral()
     {
-        // Mencari unit pertama di mana user ini bergabung
         $unitUser = UnitUser::where('user_id', Auth::id())->first();
 
         if (!$unitUser) {
             return redirect()->route('dashboard')->with('error', 'Anda belum terdaftar di unit manapun.');
         }
 
-        // Jika ketemu unitnya, panggil fungsi index di bawah dengan ID unit tersebut
         return $this->index($unitUser->unit_id);
     }
 
-    /**
-     * Menampilkan Kalender Aktivitas Spesifik Unit
-     */
+    // Menampilkan Kalender Aktivitas Spesifik Unit
     public function index($unit_id)
     {
         $unit = Unit::findOrFail($unit_id);
@@ -40,19 +40,12 @@ class ActivityController extends Controller
             return [
                 'id'    => $activity->id,
                 'title' => $activity->title,
-
-                // Pakai tanggal saja agar jadi allDay range
                 'start' => \Carbon\Carbon::parse($activity->start_date)->toDateString(),
-
-                // end +1 hari karena FullCalendar exclusive
                 'end'   => $activity->end_date
                     ? \Carbon\Carbon::parse($activity->end_date)->addDay()->toDateString()
                     : null,
-
                 'allDay' => true,
-
                 'color' => $activity->type === 'kegiatan' ? '#3C50E0' : '#FFA70B',
-
                 'extendedProps' => [
                     'location'    => $activity->location,
                     'description' => $activity->description,
@@ -62,7 +55,6 @@ class ActivityController extends Controller
             ];
         });
 
-
         // Cek Jabatan Ketua
         $isKetua = UnitUser::where('user_id', Auth::id())
             ->where('unit_id', $unit_id)
@@ -71,10 +63,80 @@ class ActivityController extends Controller
                     ->where('name', 'NOT LIKE', '%Wakil%');
             })->exists();
 
-        // PERBAIKAN: Mengarah ke folder pages sesuai gambar file manager Anda
         return view('pages.calender', compact('unit', 'events', 'isKetua'));
     }
 
+    // Halaman List Semua Unit
+    public function allActivities()
+    {
+        return view('activities.all_units', [
+            'units' => Unit::all()
+        ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | 2. LIST VIEWS & FILTERING
+    |--------------------------------------------------------------------------
+    | Fungsi untuk menampilkan data dalam bentuk tabel/list dengan fitur filter status.
+    */
+
+    // Halaman List KEGIATAN RUTIN
+    public function indexKegiatan(Request $request)
+    {
+        $unitUser = UnitUser::where('user_id', Auth::id())->first();
+        $unitId = $unitUser ? $unitUser->unit_id : null;
+
+        $query = Activity::where('type', 'kegiatan');
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        $activities = $query->orderBy('start_date', 'desc')->paginate(10);
+        $activities->appends($request->all());
+
+        return view('activities.index', [
+            'activities' => $activities,
+            'pageTitle'  => 'Daftar Kegiatan Rutin',
+            'pageType'   => 'kegiatan',
+            'unitId'     => $unitId
+        ]);
+    }
+
+    // Halaman List ACARA BESAR (EVENT)
+    public function indexAcara(Request $request)
+    {
+        $unitUser = UnitUser::where('user_id', Auth::id())->first();
+        $unitId = $unitUser ? $unitUser->unit_id : null;
+
+        $query = Activity::where('type', 'acara');
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        $activities = $query->orderBy('start_date', 'desc')->paginate(10);
+        $activities->appends($request->all());
+
+        return view('activities.index', [
+            'activities' => $activities,
+            'pageTitle'  => 'Daftar Acara Besar (Event)',
+            'pageType'   => 'acara',
+            'unitId'     => $unitId
+        ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | 3. DATA PROCESSING (CRUD)
+    |--------------------------------------------------------------------------
+    | Fungsi untuk mengolah penyimpanan, pembaruan, dan penghapusan data.
+    */
+
+    // Simpan Data Baru
     public function store(Request $request, $unit_id)
     {
         $this->authorizeKetua($unit_id);
@@ -94,6 +156,28 @@ class ActivityController extends Controller
         return redirect()->back()->with('success', 'Agenda berhasil disimpan!');
     }
 
+    // Update Data (Form)
+    public function update(Request $request, $id)
+    {
+        $activity = Activity::findOrFail($id);
+        $this->authorizeKetua($activity->unit_id);
+
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'status'      => 'required|in:pending,progress,completed',
+            'type'        => 'required|in:kegiatan,acara',
+            'start_date'  => 'required|date',
+            'end_date'    => 'nullable|date|after_or_equal:start_date',
+            'location'    => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $activity->update($validated);
+
+        return redirect()->back()->with('success', 'Data berhasil diperbarui!');
+    }
+
+    // Hapus Data
     public function destroy($id)
     {
         $activity = Activity::findOrFail($id);
@@ -107,113 +191,17 @@ class ActivityController extends Controller
         return redirect()->back()->with('success', 'Agenda berhasil dihapus!');
     }
 
-    public function allActivities()
-    {
-        return view('activities.all_units', [
-            'units' => Unit::all()
-        ]);
-    }
 
-    private function authorizeKetua($unit_id)
-    {
-        $check = UnitUser::where('user_id', Auth::id())
-            ->where('unit_id', $unit_id)
-            ->whereHas('role', function ($query) {
-                $query->where('name', 'LIKE', '%Ketua%')
-                    ->where('name', 'NOT LIKE', '%Wakil%');
-            })->exists();
-
-        if (!$check) {
-            abort(403, 'Hanya Ketua yang dapat mengelola agenda.');
-        }
-    }
-
-
-    // 2. Method untuk Halaman List KEGIATAN
-    // Update method indexKegiatan
-    public function indexKegiatan(Request $request) // <--- Tambahkan Request $request
-    {
-        // 1. Cari Unit ID user
-        $unitUser = UnitUser::where('user_id', Auth::id())->first();
-        $unitId = $unitUser ? $unitUser->unit_id : null;
-
-        // 2. Mulai Query Dasar
-        $query = Activity::where('type', 'kegiatan');
-
-        // 3. Logika Filter (Jika ada status yang dipilih)
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
-
-        // 4. Eksekusi Query dengan Pagination
-        $activities = $query->orderBy('start_date', 'desc')->paginate(10);
-
-        // Penting: Tambahkan ini agar filter tidak hilang saat pindah halaman (Pagination)
-        $activities->appends($request->all());
-
-        return view('activities.index', [
-            'activities' => $activities,
-            'pageTitle'  => 'Daftar Kegiatan Rutin',
-            'pageType'   => 'kegiatan',
-            'unitId'     => $unitId
-        ]);
-    }
-
-    // Update method indexAcara
-    public function indexAcara(Request $request) // <--- Tambahkan Request $request
-    {
-        $unitUser = UnitUser::where('user_id', Auth::id())->first();
-        $unitId = $unitUser ? $unitUser->unit_id : null;
-
-        $query = Activity::where('type', 'acara');
-
-        // Logika Filter
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
-
-        $activities = $query->orderBy('start_date', 'desc')->paginate(10);
-        $activities->appends($request->all()); // Fix pagination link
-
-        return view('activities.index', [
-            'activities' => $activities,
-            'pageTitle'  => 'Daftar Acara Besar (Event)',
-            'pageType'   => 'acara',
-            'unitId'     => $unitId
-        ]);
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        // 1. Cari data berdasarkan ID
-        $activity = Activity::findOrFail($id);
-
-        // 2. Cek apakah user adalah Ketua di unit tersebut
-        $this->authorizeKetua($activity->unit_id);
-
-        // 3. Validasi Input (Status wajib ada karena fitur utama edit adalah ganti status)
-        $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'status'      => 'required|in:pending,progress,completed',
-            'type'        => 'required|in:kegiatan,acara',
-            'start_date'  => 'required|date',
-            'end_date'    => 'nullable|date|after_or_equal:start_date',
-            'location'    => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-
-        // 4. Simpan Perubahan
-        $activity->update($validated);
-
-        // 5. Kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Data berhasil diperbarui!');
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | 4. CALENDAR SPECIFIC ACTIONS
+    |--------------------------------------------------------------------------
+    | Fungsi khusus untuk interaksi langsung pada FullCalendar (Drag & Drop).
+    */
 
     public function dragUpdate(Request $request, $id)
     {
         $activity = Activity::findOrFail($id);
-
         $this->authorizeKetua($activity->unit_id);
 
         $validated = $request->validate([
@@ -230,5 +218,27 @@ class ActivityController extends Controller
             'status' => true,
             'message' => 'Updated'
         ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | 5. INTERNAL HELPER METHODS
+    |--------------------------------------------------------------------------
+    | Fungsi pembantu (private) untuk mendukung logika otorisasi dan keamanan.
+    */
+
+    private function authorizeKetua($unit_id)
+    {
+        $check = UnitUser::where('user_id', Auth::id())
+            ->where('unit_id', $unit_id)
+            ->whereHas('role', function ($query) {
+                $query->where('name', 'LIKE', '%Ketua%')
+                    ->where('name', 'NOT LIKE', '%Wakil%');
+            })->exists();
+
+        if (!$check) {
+            abort(403, 'Hanya Ketua yang dapat mengelola agenda.');
+        }
     }
 }

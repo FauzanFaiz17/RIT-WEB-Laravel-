@@ -2,19 +2,21 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 
 <head>
+    {{-- SECTION: META & TITLE --}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Masuk | RIT Organization</title>
 
+    {{-- SECTION: ASSETS (VITE) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    {{-- SECTION: SLIDER LOGIC (ALPINE.JS DATA) --}}
     <script>
         function setupSlider() {
             return {
                 activeSlide: 0,
                 timer: null,
                 slides: [{
-                        // Perhatikan: Gunakan kutip satu (') di dalam asset()
                         img: "{{ asset('images/login_register/rit_1.JPG') }}",
                         title: 'Sinergi & Efisiensi.',
                         desc: 'Sistem informasi manajemen terpadu untuk kemudahan administrasi organisasi Anda.'
@@ -55,8 +57,10 @@
         }
     </script>
 
+    {{-- SECTION: EXTERNAL SCRIPTS --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    {{-- SECTION: THEME DETECTION (DARK MODE) --}}
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia(
                 '(prefers-color-scheme: dark)').matches)) {
@@ -71,12 +75,28 @@
 
     <div class="flex min-h-screen">
 
+        {{-- ==========================================================================
+             LEFT SIDE: LOGIN FORM SECTION
+             ========================================================================== --}}
         <div
             class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24 bg-white dark:bg-gray-900 w-full lg:w-[45%]">
-            <div class="mx-auto w-full max-w-sm lg:w-96">
+            <div class="mx-auto w-full max-sm lg:w-96">
 
-                <div class="mb-10 ">
-                    <div class="flex items-center  gap-3 mb-8">
+                {{-- TOMBOL KEMBALI (ROUTE LANDING DISINI) --}}
+                <div class="mb-10">
+                    <a href="#"
+                        class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-white/10 dark:text-gray-400 dark:hover:bg-white/20 transition-all shadow-sm">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
+
+                    </a>
+                </div>
+
+                {{-- SUB-SECTION: LOGO & WELCOME TEXT --}}
+                <div class="mb-10">
+                    <div class="flex items-center gap-3 mb-8">
                         <img src="{{ asset('images/logo/rit-dark-logo.svg') }}" alt="Logo RIT" class="h-12 w-auto">
                     </div>
 
@@ -84,13 +104,16 @@
                         Selamat Datang
                     </h2>
                     <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                         Gunakan akunmu untuk bisa masuk kedalam aplikasi .
+                        Gunakan akunmu untuk bisa masuk kedalam aplikasi.
                     </p>
                 </div>
 
+                {{-- SUB-SECTION: LOGIN FORM --}}
                 <div class="mt-6">
                     <form action="{{ route('login') }}" method="POST" class="space-y-6">
                         @csrf
+
+                        {{-- Email Input --}}
                         <div>
                             <label for="email"
                                 class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Email</label>
@@ -112,6 +135,7 @@
                             @enderror
                         </div>
 
+                        {{-- Password Input with Visibility Toggle --}}
                         <div x-data="{ show: false }">
                             <label for="password"
                                 class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-300">Password</label>
@@ -145,6 +169,7 @@
                             </div>
                         </div>
 
+                        {{-- Remember Me & Forgot Password --}}
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <input id="remember-me" name="remember" type="checkbox"
@@ -159,6 +184,7 @@
                             </div>
                         </div>
 
+                        {{-- Submit Button --}}
                         <div>
                             <button type="submit"
                                 class="flex w-full justify-center rounded-xl bg-[#3C50E0] px-3 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 hover:bg-[#3243be] hover:shadow-blue-500/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3C50E0] transition-all duration-200">
@@ -166,13 +192,26 @@
                             </button>
                         </div>
                     </form>
+
+
+                    {{-- SUB-SECTION: REGIS REDIRECT --}}
+                    <p class="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                        Belum Punya Akun yaaa?
+                        <a href="/register" class="font-semibold text-[#3C50E0] hover:text-blue-500 transition-colors">
+                            Daftar di sini
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
 
+        {{-- ==========================================================================
+             RIGHT SIDE: IMAGE SLIDER SECTION
+             ========================================================================== --}}
         <div class="relative hidden w-0 flex-1 lg:block bg-gray-900 overflow-hidden" x-data="setupSlider()"
             x-init="init()">
 
+            {{-- Background Image Slides --}}
             <template x-for="(slide, index) in slides" :key="index">
                 <div x-show="activeSlide === index" x-transition:enter="transition ease-out duration-1000"
                     x-transition:enter-start="opacity-0 transform scale-105"
@@ -188,6 +227,7 @@
                 </div>
             </template>
 
+            {{-- Slider Content (Text & Descriptions) --}}
             <div class="absolute bottom-0 left-0 right-0 p-16 text-white z-10">
                 <div class="relative min-h-[160px]">
                     <template x-for="(slide, index) in slides" :key="index">
@@ -204,6 +244,7 @@
                     </template>
                 </div>
 
+                {{-- Slider Navigation Indicators --}}
                 <div class="flex gap-2 mt-4">
                     <template x-for="(slide, index) in slides" :key="index">
                         <button @click="goToSlide(index)"

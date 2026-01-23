@@ -71,7 +71,6 @@
                                     </svg>
                                 </span>
                             </div>
-                            
                         @else
                             {{-- MODE MANUAL: Jika diakses dari menu navigasi umum --}}
                             <div class="relative z-20">

@@ -29,6 +29,7 @@
                 Number of customer based on country
             </p>
         </div>
+        
 
          <!-- Dropdown Menu -->
          <x-common.dropdown-menu />
@@ -39,6 +40,7 @@
         <div id="mapOne" class="mapOne map-btn -mx-4 -my-6 h-[212px] w-[252px] 2xsm:w-[307px] xsm:w-[358px] sm:-mx-6 md:w-[668px] lg:w-[634px] xl:w-[393px] 2xl:w-[554px]"></div>
     </div>
 
+    
     <div class="space-y-5">
         @foreach($countriesList as $country)
             <div class="flex items-center justify-between">
@@ -71,3 +73,5 @@
         @endforeach
     </div>
 </div>
+
+
