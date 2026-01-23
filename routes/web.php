@@ -9,7 +9,7 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
+
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\InventarisController;
@@ -145,29 +145,6 @@ Route::post('/otp/resend', [OtpController::class, 'resend'])->name('otp.resend')
 
 
 
-// --- USER MANAGEMENT PAGES (CRUD) ---
-
-// 1. Index (Menampilkan daftar semua user)
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
-// 2. Create (Menampilkan form tambah user baru)
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-
-// 3. Store (Menyimpan data user baru dari form)
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-
-// 4. Show (Menampilkan detail satu user)
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-
-// 5. Edit (Menampilkan form edit user)
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-
-// 6. Update (Memperbarui data user yang sudah ada)
-// Metode: PUT/PATCH digunakan untuk pembaruan data
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-
-// 7. Destroy (Menghapus user)
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 // --- ROUTE KEUANGAN ---
 Route::get('/keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
@@ -234,9 +211,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // --- Dashboard ---
-    Route::get('/', function () {
-        return redirect()->route('dashboard');
-    });
+    // Route::get('/', function () {
+    //     return redirect()->route('dashboard');
+    // });
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware(['auth', 'verified'])
         ->name('dashboard');
