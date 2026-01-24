@@ -30,7 +30,12 @@
 
               <div class="col-span-12 xl:col-span-8">
                 <!-- ====== Chart Eleven Start -->
-                <x-dashboard.statistik-keuangan />
+                        <x-dashboard.statistik-keuangan 
+            :totalPemasukan="$totalPemasukan" 
+            :totalPengeluaran="$totalPengeluaran" 
+            :saldo="$saldo" 
+            :chartData="$chartData" 
+        />
 <!-- ====== Chart Eleven End -->
               </div>
 
@@ -41,14 +46,13 @@
 
 
 
-
 <!-- ====== Chart Twelve End -->
               </div>
 
               <div class="col-span-12 xl:col-span-6">
                 <!-- ====== Chart Thirteen Start -->
          <x-dashboard.mayoritas
-             :categories="$userByDivision"
+                      :categories="$userByDivision"
     :total-users="$totalUsers"/>
 <!-- ====== Chart Thirteen End -->
               </div>

@@ -6,6 +6,7 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Activity;
+use App\Models\Keuangan;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -140,6 +141,14 @@ $userByDivision = $divisions->map(function ($division, $index) use ($totalUsers,
     ];
 });
 
+        // --- FINANCIAL STATISTICS START ---
+        $totalPemasukan = Keuangan::where('jenis', 1)->sum('nominal');
+        $totalPengeluaran = Keuangan::where('jenis', 2)->sum('nominal');
+        $saldo = $totalPemasukan - $totalPengeluaran;
+
+        // Chart Data (Monthly for last 12 months)
+        $chartData = $this->getFinancialChartData();
+        // --- FINANCIAL STATISTICS END ---
         /* ===============================
          |  KIRIM KE VIEW
          |===============================*/
@@ -155,7 +164,51 @@ $userByDivision = $divisions->map(function ($division, $index) use ($totalUsers,
             'divisionGrowth',
             'projectGrowth',
             'projectProgress',
-            'userByDivision'
+            'userByDivision',
+            'totalPemasukan',
+            'totalPengeluaran',
+            'saldo',
+            'chartData'
         ));
+    }
+
+    
+    private function getFinancialChartData()
+    {
+        // Monthly data for the last 12 months
+        $startDate = Carbon::now()->subMonths(11)->startOfMonth();
+        $endDate = Carbon::now()->endOfMonth();
+        
+        $query = Keuangan::query()
+            ->selectRaw('DATE_FORMAT(tanggal, "%Y-%m") as period, jenis, SUM(nominal) as total')
+            ->whereDate('tanggal', '>=', $startDate)
+            ->whereDate('tanggal', '<=', $endDate)
+            ->groupBy('period', 'jenis')
+            ->orderBy('period', 'asc')
+            ->get();
+
+        $dates = [];
+        $pemasukanData = [];
+        $pengeluaranData = [];
+
+        $current = $startDate->copy();
+        while ($current <= $endDate) {
+            $monthKey = $current->format('Y-m');
+            $dates[] = $current->translatedFormat('M Y'); // e.g., "Des 2024"
+            
+            $pemasukan = $query->where('period', $monthKey)->where('jenis', 1)->first()->total ?? 0;
+            $pengeluaran = $query->where('period', $monthKey)->where('jenis', 2)->first()->total ?? 0;
+            
+            $pemasukanData[] = (float) $pemasukan;
+            $pengeluaranData[] = (float) $pengeluaran;
+            
+            $current->addMonth();
+        }
+
+        return [
+            'dates' => $dates,
+            'pemasukan' => $pemasukanData,
+            'pengeluaran' => $pengeluaranData
+        ];
     }
 }
