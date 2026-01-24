@@ -48,6 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('#chartThirteen')) {
         import('./components/chart/chart-13').then(module => module.initChartThirteen());
     }
+    // if (document.querySelector('#salesCategoryDonut')) {
+    //     import('./components/chart/chart-4').then(module => module.initSalesCategoryDonut());
+    // }
+
 
     // // Calendar init
     // if (document.querySelector('#calendar')) {
